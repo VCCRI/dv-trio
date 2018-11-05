@@ -8,7 +8,7 @@ Clone this repository into your cloud instance and run the `install_dependencies
 ## Usage
 ```
 Usage:
-       $(basename $0) -f father -m mother -c child -s sex -r reference [ -o output ] [ -t threshold ] [ -b bucket ]
+       dv-trio.sh -f father -m mother -c child -s sex -r reference [ -o output ] [ -t threshold ] [ -b bucket ]
 
 Post-processes trio calls made by DeepVariant to correct for Mendelian errors.
 
