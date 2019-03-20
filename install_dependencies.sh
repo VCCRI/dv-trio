@@ -6,6 +6,19 @@
 # exec -l $SHELL
 
 mkdir -p lib
+#
+sudo snap install aws-cli --classic
+sudo apt-get update -y
+sudo apt install build-essential -y
+#sudo apt install gcc
+#sudo apt install zlib1g-dev
+#sudo apt-get install libbz2-dev
+#sudo apt-get install liblzma-dev
+#sudo apt install make
+#sudo apt-get install autoconf
+sudo apt install pkg-config -y
+sudo apt-get install libcurl4 libcurl4-openssl-dev -y
+sudo apt-get install libssl-dev -y
 
 # htslib
 wget https://github.com/samtools/htslib/releases/download/1.9/htslib-1.9.tar.bz2 -O htslib.tar.bz2
@@ -22,7 +35,7 @@ cd samtools-1.8
 ./configure --without-curses
 make
 sudo make prefix=/usr/local/bin install
-sudo ln -s /usr/local/bin/bin/samtoos /usr/bin/samtools
+sudo ln -s /usr/local/bin/bin/samtools /usr/bin/samtools
 cd ..
 
 # bcftools
