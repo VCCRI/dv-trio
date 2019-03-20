@@ -21,6 +21,7 @@ sudo apt-get install autoconf -y
 sudo apt install pkg-config -y
 sudo apt-get install libcurl4 libcurl4-openssl-dev -y
 sudo apt-get install libssl-dev -y
+sudo apt-get -y install docker.io
 
 # python version
 python --version
