@@ -204,11 +204,3 @@ done
 
 echo "DeepVariant run completed."
 
-# Write to S3 bucket
-if [ upload_to_bucket = true ] ; then
-    echo "Writing DeepVariant output to S3 Bucket"
-    aws s3 cp "${OUTPUT_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
-    aws s3 cp "${LOG_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
-fi
-
-echo "All done!"
