@@ -81,7 +81,7 @@ done
 shift $((OPTIND -1))
 
 
-Get sample names of samples
+#Get sample names of samples
 father_sample=`samtools view -H $father_path | grep '^@RG' | sed "s/.*SM:\([^\t]*\).*/\1/g" | uniq`
 mother_sample=`samtools view -H $mother_path | grep '^@RG' | sed "s/.*SM:\([^\t]*\).*/\1/g" | uniq`
 child_sample=`samtools view -H $child_path | grep '^@RG' | sed "s/.*SM:\([^\t]*\).*/\1/g" | uniq`
@@ -119,16 +119,18 @@ N_SHARDS="4"
 echo "Downloading model"
 cd "${MODELS_DIR}"
 gsutil -m cp -r "${MODEL_BUCKET}/*" .
-echo "DOne downloading model"
+echo "Done downloading model"
 
 # S3 bucket to store output
 BUCKET_OUTPUT=bucket
 
 
 cd "${BASE}"
-samples=( $child_sample $father_sample $mother_sample )
-bams=( $child_path $father_path $mother_path )
+samples=( $child_sample )
+bams=( $child_path )
 indices=( 0 )
+#samples=( $child_sample $father_sample $mother_sample )
+#bams=( $child_path $father_path $mother_path )
 #indices=( 0 1 2 )
 
 for index in ${indices[@]}

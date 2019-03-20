@@ -8,7 +8,9 @@
 mkdir -p lib
 #
 sudo snap install aws-cli --classic
-sudo apt-get update -y
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install pythin2.7 python-pip
 sudo apt install build-essential -y
 #sudo apt install gcc
 sudo apt install zlib1g-dev
@@ -19,6 +21,9 @@ sudo apt-get install autoconf -y
 sudo apt install pkg-config -y
 sudo apt-get install libcurl4 libcurl4-openssl-dev -y
 sudo apt-get install libssl-dev -y
+
+# python version
+python --version
 
 # htslib
 wget https://github.com/samtools/htslib/releases/download/1.9/htslib-1.9.tar.bz2 -O htslib.tar.bz2
@@ -84,4 +89,7 @@ make
 sudo ln -s `pwd`/FamSeq /usr/bin/FamSeq
 cd ../..
 FamSeq -h
-
+#
+aws s3 cp s3://vccri-giannoulatou-lab-clihad-deepvariant/gsutil.tar.gz .
+tar xfz gsutil.tar.gz -C $HOME
+export PATH=${PATH}:$HOME/gsut
