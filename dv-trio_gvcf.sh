@@ -126,6 +126,7 @@ BUCKET_OUTPUT=bucket
 
 
 cd "${BASE}"
+echo "${child_sample} : ${child_path} "
 samples=( $child_sample )
 bams=( $child_path )
 indices=( 0 )
