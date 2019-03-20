@@ -11,11 +11,11 @@ sudo snap install aws-cli --classic
 sudo apt-get update -y
 sudo apt install build-essential -y
 #sudo apt install gcc
-#sudo apt install zlib1g-dev
-#sudo apt-get install libbz2-dev
-#sudo apt-get install liblzma-dev
+sudo apt install zlib1g-dev
+sudo apt-get install libbz2-dev -y
+sudo apt-get install liblzma-dev -y
 #sudo apt install make
-#sudo apt-get install autoconf
+sudo apt-get install autoconf -y
 sudo apt install pkg-config -y
 sudo apt-get install libcurl4 libcurl4-openssl-dev -y
 sudo apt-get install libssl-dev -y
@@ -37,6 +37,7 @@ make
 sudo make prefix=/usr/local/bin install
 sudo ln -s /usr/local/bin/bin/samtools /usr/bin/samtools
 cd ..
+samtools help
 
 # bcftools
 wget https://github.com/samtools/bcftools/releases/download/1.9/bcftools-1.9.tar.bz2 -O bcftools.tar.bz2
@@ -46,6 +47,7 @@ make
 sudo make prefix=/usr/local/bin install
 sudo ln -s /usr/local/bin/bin/bcftools /usr/bin/bcftools
 cd ..
+bcftools help
 
 # vcf-tools
 git clone https://github.com/vcftools/vcftools.git
@@ -57,6 +59,7 @@ sudo make install
 export PERL5LIB=`pwd`/src/perl/
 # sudo ln -s `pwd`/src/perl/vcf-merge /usr/bin/vcf-merge
 cd ..
+vcftools --version
 
 # vt
 git clone https://github.com/atks/vt.git  
@@ -65,6 +68,7 @@ make
 make test
 sudo ln -s `pwd`/vt /usr/bin/vt
 cd ..
+vt help
 
 # parallel
 sudo apt-get -y update
@@ -79,6 +83,5 @@ cd FamSeq/src/
 make 
 sudo ln -s `pwd`/FamSeq /usr/bin/FamSeq
 cd ../..
-
-
+FamSeq -h
 
