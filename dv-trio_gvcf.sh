@@ -129,6 +129,7 @@ cd "${BASE}"
 samples=( $child_sample )
 bams=( $child_path )
 indices=( 0 )
+echo "Setup input samples"
 #samples=( $child_sample $father_sample $mother_sample )
 #bams=( $child_path $father_path $mother_path )
 #indices=( 0 1 2 )
