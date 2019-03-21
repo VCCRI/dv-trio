@@ -12,7 +12,7 @@ sudo apt update -y
 sudo apt upgrade -y
 sudo apt install build-essential -y
 #sudo apt install gcc
-sudo apt install zlib1g-devy
+sudo apt install zlib1g-dev -y
 
 sudo apt-get install libbz2-dev -y
 sudo apt-get install liblzma-dev -y
