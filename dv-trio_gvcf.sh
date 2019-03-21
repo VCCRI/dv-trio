@@ -174,35 +174,35 @@ do
 
     ####### ------------------------------ CALL_VARIANTS -------------------------------- #######
 
-    echo "Running DeepVariant CALL VARIANTS..."
+#    echo "Running DeepVariant CALL VARIANTS..."
 
     # run call_variants
-    cd "${BASE}"
-    ( time sudo docker run \
-        -v /home/${USER}:/home/${USER} \
-        gcr.io/deepvariant-docker/deepvariant:"${BIN_VERSION}" \
-        /opt/deepvariant/bin/call_variants \
-        --outfile "${CALL_VARIANTS_OUTPUT}" \
-        --examples "${EXAMPLES}" \
-        --checkpoint "${MODEL}"
-    ) >"${LOG_DIR}/call_variants_${SAMPLE}.log" 2>&1
+#    cd "${BASE}"
+#    ( time sudo docker run \
+#        -v /home/${USER}:/home/${USER} \
+#        gcr.io/deepvariant-docker/deepvariant:"${BIN_VERSION}" \
+#        /opt/deepvariant/bin/call_variants \
+#        --outfile "${CALL_VARIANTS_OUTPUT}" \
+#        --examples "${EXAMPLES}" \
+#        --checkpoint "${MODEL}"
+#    ) >"${LOG_DIR}/call_variants_${SAMPLE}.log" 2>&1
 
 
     ####### ------------------------- POSTPROCESS_VARIANTS ---------------------------- #######
 
-    echo "Running DeepVariant POSTPROCESS VARIANTS..."
+#    echo "Running DeepVariant POSTPROCESS VARIANTS..."
 
     # run postprocess_variants
-    cd "${BASE}"
-    ( time sudo docker run \
-        -v /home/${USER}:/home/${USER} \
-        gcr.io/deepvariant-docker/deepvariant:"${BIN_VERSION}" \
-        /opt/deepvariant/bin/postprocess_variants \
-        --ref "${REF}" \
-        --infile "${CALL_VARIANTS_OUTPUT}" \
-        --outfile "${OUTPUT_VCF}"
-        --gvcf-outfile "${OUTPUT_GVCF}"
-    ) >"${LOG_DIR}/postprocess_variants_${SAMPLE}.log" 2>&1
+#    cd "${BASE}"
+#    ( time sudo docker run \
+#        -v /home/${USER}:/home/${USER} \
+#        gcr.io/deepvariant-docker/deepvariant:"${BIN_VERSION}" \
+#        /opt/deepvariant/bin/postprocess_variants \
+#        --ref "${REF}" \
+#        --infile "${CALL_VARIANTS_OUTPUT}" \
+#        --outfile "${OUTPUT_VCF}"
+#        --gvcf-outfile "${OUTPUT_GVCF}"
+#    ) >"${LOG_DIR}/postprocess_variants_${SAMPLE}.log" 2>&1
 
 done
 
