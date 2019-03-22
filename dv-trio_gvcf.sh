@@ -169,9 +169,15 @@ do
         --examples "${EXAMPLES}" \
         --sample_name "${SAMPLE}" \
         --gvcf "${GVCF_TFRECORDS}" \
+        --regions "chr22" \
         --task {} \
     ) >"${LOG_DIR}/make_examples_${SAMPLE}.log" 2>&1
 
+if [ upload_to_bucket = true ] ; then
+    echo "Writing DeepVariant output to S3 Bucket"
+    aws s3 cp "${OUTPUT_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
+    aws s3 cp "${LOG_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
+fi
 
     ####### ------------------------------ CALL_VARIANTS -------------------------------- #######
 
@@ -185,9 +191,14 @@ do
         /opt/deepvariant/bin/call_variants \
         --outfile "${CALL_VARIANTS_OUTPUT}" \
         --examples "${EXAMPLES}" \
-        --checkpoint "${MODEL}"
+        --checkpoint "${MODEL}" \
     ) >"${LOG_DIR}/call_variants_${SAMPLE}.log" 2>&1
 
+if [ upload_to_bucket = true ] ; then
+    echo "Writing DeepVariant output to S3 Bucket"
+    aws s3 cp "${OUTPUT_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
+    aws s3 cp "${LOG_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
+fi
 
     ####### ------------------------- POSTPROCESS_VARIANTS ---------------------------- #######
 
@@ -201,11 +212,17 @@ do
 #        /opt/deepvariant/bin/postprocess_variants \
 #        --ref "${REF}" \
 #        --infile "${CALL_VARIANTS_OUTPUT}" \
-#        --outfile "${OUTPUT_VCF}"
-#        --gvcf-outfile "${OUTPUT_GVCF}"
+#        --outfile "${OUTPUT_VCF}" \
+#        --nonvariant_site_tfrecord_path "${GVCF_TFRECORDS}" \
+#        --gvcf-outfile "${OUTPUT_GVCF}" \
 #    ) >"${LOG_DIR}/postprocess_variants_${SAMPLE}.log" 2>&1
 
 done
 
+#if [ upload_to_bucket = true ] ; then
+#    echo "Writing DeepVariant output to S3 Bucket"
+#    aws s3 cp "${OUTPUT_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
+#    aws s3 cp "${LOG_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
+#fi
 echo "DeepVariant run completed."
 
