@@ -168,7 +168,7 @@ do
         --reads "${BAM}" \
         --examples "${EXAMPLES}" \
         --sample_name "${SAMPLE}" \
-		--gvcf "${GVCF_TFRECORDS}" \
+        --gvcf "${GVCF_TFRECORDS}" \
         --task {} \
     ) >"${LOG_DIR}/make_examples_${SAMPLE}.log" 2>&1
 
