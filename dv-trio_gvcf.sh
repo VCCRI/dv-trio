@@ -95,6 +95,7 @@ BASE="${absolute_outdir}/deepvariant"
 TEMP_DIR="${BASE}/temp"
 OUTPUT_DIR="${BASE}/output"
 MODELS_DIR="${BASE}/models"
+MODEL="${MODELS_DIR}/model.ckpt"
 LOG_DIR_BASE="${BASE}/logs"
 REF="${running_dir}/$ref"
 
