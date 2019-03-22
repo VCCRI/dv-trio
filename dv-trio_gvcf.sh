@@ -168,24 +168,25 @@ do
         --reads "${BAM}" \
         --examples "${EXAMPLES}" \
         --sample_name "${SAMPLE}" \
+		--gvcf "${GVCF_TFRECORDS}" \
         --task {} \
     ) >"${LOG_DIR}/make_examples_${SAMPLE}.log" 2>&1
 
 
     ####### ------------------------------ CALL_VARIANTS -------------------------------- #######
 
-#    echo "Running DeepVariant CALL VARIANTS..."
+    echo "Running DeepVariant CALL VARIANTS..."
 
     # run call_variants
-#    cd "${BASE}"
-#    ( time sudo docker run \
-#        -v /home/${USER}:/home/${USER} \
-#        gcr.io/deepvariant-docker/deepvariant:"${BIN_VERSION}" \
-#        /opt/deepvariant/bin/call_variants \
-#        --outfile "${CALL_VARIANTS_OUTPUT}" \
-#        --examples "${EXAMPLES}" \
-#        --checkpoint "${MODEL}"
-#    ) >"${LOG_DIR}/call_variants_${SAMPLE}.log" 2>&1
+    cd "${BASE}"
+    ( time sudo docker run \
+        -v /home/${USER}:/home/${USER} \
+        gcr.io/deepvariant-docker/deepvariant:"${BIN_VERSION}" \
+        /opt/deepvariant/bin/call_variants \
+        --outfile "${CALL_VARIANTS_OUTPUT}" \
+        --examples "${EXAMPLES}" \
+        --checkpoint "${MODEL}"
+    ) >"${LOG_DIR}/call_variants_${SAMPLE}.log" 2>&1
 
 
     ####### ------------------------- POSTPROCESS_VARIANTS ---------------------------- #######
