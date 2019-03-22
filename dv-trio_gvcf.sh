@@ -170,7 +170,6 @@ do
         --examples "${EXAMPLES}" \
         --sample_name "${SAMPLE}" \
         --gvcf "${GVCF_TFRECORDS}" \
-        --regions "chr22" \
         --task {} \
     ) >"${LOG_DIR}/make_examples_${SAMPLE}.log" 2>&1
 
@@ -203,27 +202,27 @@ fi
 
     ####### ------------------------- POSTPROCESS_VARIANTS ---------------------------- #######
 
-#    echo "Running DeepVariant POSTPROCESS VARIANTS..."
+    echo "Running DeepVariant POSTPROCESS VARIANTS..."
 
     # run postprocess_variants
-#    cd "${BASE}"
-#    ( time sudo docker run \
-#        -v /home/${USER}:/home/${USER} \
-#        gcr.io/deepvariant-docker/deepvariant:"${BIN_VERSION}" \
-#        /opt/deepvariant/bin/postprocess_variants \
-#        --ref "${REF}" \
-#        --infile "${CALL_VARIANTS_OUTPUT}" \
-#        --outfile "${OUTPUT_VCF}" \
-#        --nonvariant_site_tfrecord_path "${GVCF_TFRECORDS}" \
-#        --gvcf-outfile "${OUTPUT_GVCF}" \
-#    ) >"${LOG_DIR}/postprocess_variants_${SAMPLE}.log" 2>&1
+    cd "${BASE}"
+    ( time sudo docker run \
+        -v /home/${USER}:/home/${USER} \
+        gcr.io/deepvariant-docker/deepvariant:"${BIN_VERSION}" \
+        /opt/deepvariant/bin/postprocess_variants \
+        --ref "${REF}" \
+        --infile "${CALL_VARIANTS_OUTPUT}" \
+        --outfile "${OUTPUT_VCF}" \
+        --nonvariant_site_tfrecord_path "${GVCF_TFRECORDS}" \
+        --gvcf_outfile "${OUTPUT_GVCF}" \
+    ) >"${LOG_DIR}/postprocess_variants_${SAMPLE}.log" 2>&1
 
 done
 
-#if [ upload_to_bucket = true ] ; then
-#    echo "Writing DeepVariant output to S3 Bucket"
-#    aws s3 cp "${OUTPUT_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
-#    aws s3 cp "${LOG_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
-#fi
+if [ upload_to_bucket = true ] ; then
+    echo "Writing DeepVariant output to S3 Bucket"
+    aws s3 cp "${OUTPUT_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
+    aws s3 cp "${LOG_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
+fi
 echo "DeepVariant run completed."
 
