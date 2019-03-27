@@ -96,5 +96,6 @@ python --version
 ##aws s3 cp s3://vccri-giannoulatou-lab-clihad-deepvariant/gsutil.tar.gz .
 wget https://storage.googleapis.com/pub/gsutil.tar.gz
 tar xfz gsutil.tar.gz -C $HOME
-export PATH=${PATH}:$HOME/gsutil
-echo $PATH
+sudo ln -s $HOME/gsutil /usr/bin/gsutil
+#export PATH=${PATH}:$HOME/gsutil
+#echo $PATH
