@@ -32,14 +32,15 @@ sudo make install
 cd ..
 
 # samtools
-wget https://github.com/samtools/samtools/releases/download/1.8/samtools-1.8.tar.bz2 -O samtools.tar.bz2
-tar -xjvf samtools.tar.bz2
-cd samtools-1.8
-./configure --without-curses
-make
-sudo make prefix=/usr/local/bin install
-sudo ln -s /usr/local/bin/bin/samtools /usr/bin/samtools
-cd ..
+sudo apt-get -y install samtools
+#wget https://github.com/samtools/samtools/releases/download/1.8/samtools-1.8.tar.bz2 -O samtools.tar.bz2
+#tar -xjvf samtools.tar.bz2
+#cd samtools-1.8
+#./configure --without-curses
+#make
+#sudo make prefix=/usr/local/bin install
+#sudo ln -s /usr/local/bin/bin/samtools /usr/bin/samtools
+#cd ..
 samtools help
 
 # bcftools
@@ -92,7 +93,8 @@ sudo apt install python2.7 python-pip -y
 # python version
 python --version
 
-aws s3 cp s3://vccri-giannoulatou-lab-clihad-deepvariant/gsutil.tar.gz .
+##aws s3 cp s3://vccri-giannoulatou-lab-clihad-deepvariant/gsutil.tar.gz .
+wget https://storage.googleapis.com/pub/gsutil.tar.gz
 tar xfz gsutil.tar.gz -C $HOME
 export PATH=${PATH}:$HOME/gsutil
 echo $PATH
