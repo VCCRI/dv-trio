@@ -89,7 +89,9 @@ child_sample=`samtools view -H $child_path | grep '^@RG' | sed "s/.*SM:\([^\t]*\
 running_dir=`pwd`
 absolute_outdir=`pwd`/$outdir
 echo $absolute_outdir
-
+#
+export PATH=${PATH}:$HOME/gsutil
+#
 # DeepVariant Locations
 BASE="${absolute_outdir}/deepvariant"
 TEMP_DIR="${BASE}/temp"
@@ -114,7 +116,7 @@ BIN_VERSION="0.7.2"
 MODEL_VERSION="0.7.2"
 MODEL_BUCKET="${BUCKET}/models/DeepVariant/${MODEL_VERSION}/DeepVariant-inception_v3-${MODEL_VERSION}+data-wgs_standard"
 
-N_SHARDS="4"
+N_SHARDS="12"
 
 # Download model into MODEL_DIR
 echo "Downloading model"
