@@ -48,7 +48,7 @@ upload_to_bucket=false
 bucket=''
 
 # Handle parameters
-while getopts ':hf:m:c:s:r:o:t:b:' opt; do
+while getopts ':hf:m:c:s:r:o:t:' opt; do
   case "$opt" in 
     f) father_path="$OPTARG" ;;
     m) mother_path="$OPTARG" ;;
@@ -275,10 +275,10 @@ then
     gender_num="1"
 fi
 
-echo -e "ID\tmID\tfID\tgender\tIndividualName" >> $ped_file
-echo -e "1\t3\t2\t${gender_num}\t${child_sample}" >> $ped_file
-echo -e "2\t0\t0\t1\t${father_sample}" >> $ped_file
-echo -e "3\t0\t0\t2\t${mother_sample}" >> $ped_file
+echo "ID  mID fID gender IndividualName" >> $ped_file
+echo "1   3   2   ${gender_num}   ${child_sample}" >> $ped_file
+echo "2   0   0   1   ${father_sample}" >> $ped_file
+echo "3   0   0   2   ${mother_sample}" >> $ped_file
 
 
 echo "Merging..."
@@ -286,10 +286,10 @@ echo "Merging..."
 vcf-merge $processed_vcfs_args > ${MERGED_VCF}
 
 
-echo "Running FamSeq..."
-FAMSEQ_OUTPUT="${PP_OUTPUT_DIR}/${triple_name}.FamSeq.vcf"
-FamSeq vcf -vcfFile $MERGED_VCF -pedFile $ped_file -output ${FAMSEQ_OUTPUT} -a -LRC ${threshold}
-sed -i 's/[ \t]*$//' $FAMSEQ_OUTPUT
+#echo "Running FamSeq..."
+#FAMSEQ_OUTPUT="${PP_OUTPUT_DIR}/${triple_name}.FamSeq.vcf"
+#FamSeq vcf -vcfFile $MERGED_VCF -pedFile $ped_file -output ${FAMSEQ_OUTPUT} -a -LRC ${threshold}
+#sed -i 's/[ \t]*$//' $FAMSEQ_OUTPUT
 
 # Write to S3 bucket
 if [ upload_to_bucket = true ] ; then

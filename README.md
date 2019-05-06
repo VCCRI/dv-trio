@@ -5,7 +5,6 @@ dv-trio takes in a trio (father-mother-child) of bam files and calls variants us
 ## Installation
 Clone this repository into your cloud instance and run the `install_dependencies.sh` script. This will install all dependencies onto your instance's PATH.
 
-
 ## Usage
 ```
 Usage:
@@ -27,10 +26,3 @@ Options:
   -b <bucket>     S3 bucket path to write output to
   -h              this help message
 ```
-## Cloud system validated
-This pipeline has been validated on :
-
-|  |  |  |
-|--|--|--|
-|AWS  | C5.4xLarge |  Ubuntu Server 18.04 LTS (HVM), SSD Volume Type |
-

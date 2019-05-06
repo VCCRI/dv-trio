@@ -160,10 +160,10 @@ done
 #
 # Do deepvariant variant calling
 echo "DeepVariant calling for ${father[1]} kicked off in background"
-sh dv-trio_deepvariant_call.sh $father_dir/sample.txt &
+bash dv-trio_deepvariant_call.sh $father_dir/sample.txt &
 echo "DeepVariant calling for ${mother[1]} kicked off in background"
-sh dv-trio_deepvariant_call.sh $mother_dir/sample.txt &
+bash dv-trio_deepvariant_call.sh $mother_dir/sample.txt &
 #
 echo "DeepVariant calling for ${child[1]}"
-sh dv-trio_deepvariant_call.sh $child_dir/sample.txt 
+bash dv-trio_deepvariant_call.sh $child_dir/sample.txt 
 # check if mother and father deepvariant call
