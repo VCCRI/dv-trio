@@ -192,3 +192,12 @@ done
 #
 #do GATK4 co_calling of gVCFs for trio
 #
+if [ "$father_complete" = false ]; #
+then #
+	usage 1 "father sample did not complete deepvariant" 
+	exit
+elif [ "$mother_complete" = false ]; #
+then #
+	usage 1 "mother sample did not complete deepvariant" 
+	exit
+fi #
