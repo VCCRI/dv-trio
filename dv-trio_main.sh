@@ -166,4 +166,29 @@ bash dv-trio_deepvariant_call.sh $mother_dir/sample.txt &
 #
 echo "DeepVariant calling for ${child[1]}"
 bash dv-trio_deepvariant_call.sh $child_dir/sample.txt 
+#
 # check if mother and father deepvariant call
+#
+father_complete=false
+mother_complete=false
+#
+for i in {1..30} # check for 5 hrs max
+do 
+	sleep 10m #
+	if [-f $father_dir/${father[1]}"_done.txt"]; # check if father done
+		father_complete=true
+		break
+	fi
+done
+#
+for i in {1..30} # check for 5 hrs max
+do 
+	sleep 10m #
+	if [-f $mother_dir/${mother[1]}"_done.txt"]; # check if father done
+		mother_complete=true
+		break
+	fi
+done
+#
+#do GATK4 co_calling of gVCFs for trio
+#
