@@ -1,0 +1,4 @@
+#Sample	Sample_ID	Sample_bam_location	Sample_gender
+CHILD	HG002	bam_location	1
+FATHER	HG003	bam_location	1
+MOTHER	HG004	bam_location	2
