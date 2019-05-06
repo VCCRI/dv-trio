@@ -32,7 +32,7 @@ done < $1 #
 #absolute_outdir=`pwd`/$outdir
 echo "DV : "$absolute_outdir
 #
-#ed export PATH=${PATH}:$HOME/gsutil
+export PATH=${PATH}:$HOME/gsutil
 #
 # DeepVariant Locations
 BASE="${absolute_outdir}/deepvariant"
