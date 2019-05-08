@@ -59,7 +59,7 @@ BIN_VERSION="0.7.2"
 MODEL_VERSION="0.7.2"
 MODEL_BUCKET="${BUCKET}/models/DeepVariant/${MODEL_VERSION}/DeepVariant-inception_v3-${MODEL_VERSION}+data-wgs_standard"
 
-N_SHARDS="12"
+N_SHARDS="11"
 
 # Download model into MODEL_DIR
 echo "Downloading model"
@@ -141,5 +141,6 @@ cd "${BASE}"
 
 echo "DeepVariant run completed for $s_id"
 touch $absolute_outdir/$s_id"_done.txt" #
+echo -e "GVCF\t$OUTPUT_GVCF" >> $absolute_outdir/$s_id"_done.txt"
 #echo 
 

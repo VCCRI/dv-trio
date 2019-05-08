@@ -64,7 +64,7 @@ while getopts ':hi:r:o:t:b:' opt; do
         outdir="$OPTARG" 
         echo "getting outdir ${outdir}"
         ;;
-    t) threshold="$OPTARG" ;;
+    t) Famseq_threshold="$OPTARG" ;;
     b)
         bucket="$OPTARG"
         upload_to_bucket=true
@@ -169,7 +169,7 @@ sleep 30m #
 echo "DeepVariant calling for ${child[1]}"
 bash dv-trio_deepvariant_call.sh $child_dir/sample.txt 
 #
-# check if mother and father deepvariant call
+# check if mother and father deepvariant call completed
 #
 father_complete=false
 mother_complete=false
@@ -194,7 +194,7 @@ do
 	fi
 done
 #
-#do GATK4 co_calling of gVCFs for trio
+#check to see if the trio is ready for GATK4 co_calling of gVCFs for trio
 #
 if [ "$father_complete" = false ]; #
 then #
@@ -205,3 +205,44 @@ then #
 	usage 1 "mother sample did not complete deepvariant" 
 	exit
 fi #
+#
+########################################################################################################
+#do GATK4 co_calling of gVCFs for trio
+#
+#build input file to co_calling task
+co_call_dir="$outdir/co_calling"
+mkdir -p $co_call_dir
+touch $co_call_dir/trio.txt
+echo -e "OUT\t$co_call_dir" >> $co_call_dir/trio.txt
+echo -e "REF\t$ref" >> $co_call_dir/trio.txt
+cat $child_dir/${child[1]}"_done.txt" >> $co_call_dir/trio.txt
+cat $father_dir/${father[1]}"_done.txt" >> $co_call_dir/trio.txt
+cat $mother_dir/${mother[1]}"_done.txt" >> $co_call_dir/trio.txt
+#
+bash dv-trio_co_calling.sh $co_call_dir/trio.txt #
+#
+########################################################################################################
+#do FamSeq on co_call VCF for trio
+#
+famseq_dir="$outdir/famseq"
+mkdir -p $famseq_dir
+touch $famseq_dir/famseq_trio.txt
+#build famseq ped file
+ped_file=$famseq_dir/famseq_trio.ped
+touch $ped_file
+
+echo -e "ID\tmID\tfID\tgender\tIndividualName" >> $ped_file
+echo -e "1\t3\t2\t${child[3]}\t${child[1]}" >> $ped_file
+echo -e "2\t0\t0\t1\t${father[1]}" >> $ped_file
+echo -e "3\t0\t0\t2\t${mother[1]}" >> $ped_file
+#
+# build famseq input file
+touch $famseq_dir/famseq_trio.txt
+echo -e "OUT\t$famseq_dir" >> $famseq_dir/famseq_trio.txt
+echo -e "REF\t$ref" >> $famseq_dir/famseq_trio.txt
+echo -e "THOLD\t$Famseq_threshold" >> $famseq_dir/famseq_trio.txt
+echo -e "PED\t$ped_file" >> $famseq_dir/famseq_trio.txt
+cat $co_call_dir/trio_co_called_done.txt >> $famseq_dir/famseq_trio.txt
+#
+bash dv-trio_famseq.sh $famseq_dir/famseq_trio.txt #
+
