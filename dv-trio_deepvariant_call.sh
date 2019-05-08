@@ -59,7 +59,7 @@ BIN_VERSION="0.7.2"
 MODEL_VERSION="0.7.2"
 MODEL_BUCKET="${BUCKET}/models/DeepVariant/${MODEL_VERSION}/DeepVariant-inception_v3-${MODEL_VERSION}+data-wgs_standard"
 
-N_SHARDS="11"
+N_SHARDS="7"
 
 # Download model into MODEL_DIR
 echo "Downloading model"
