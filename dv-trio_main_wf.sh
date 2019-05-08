@@ -221,11 +221,12 @@ child_sex=''
 ref=''
 outdir=`pwd`
 Famseq_threshold='1.0'
+run_function='3'
 upload_to_bucket=false
 bucket=''
 
 # Handle parameters
-while getopts ':hi:r:o:t:b:' opt; do
+while getopts ':hi:r:o:t:b:f:' opt; do
   case "$opt" in 
     i)
 		input_file="$OPTARG" 
@@ -234,6 +235,8 @@ while getopts ':hi:r:o:t:b:' opt; do
     r)
 		ref="$OPTARG" 
 		ref_given=true;;
+    f)
+		run_function="$OPTARG" 
 
     o) 
         outdir="$OPTARG" 
@@ -271,14 +274,22 @@ fi #
 #
 check_input # check the input file
 #
-call_deepvariant # do deepvariant variant calling on the trio samples
+if [ "$run_function" -gt "0" ]; #
+then #
+	call_deepvariant # do deepvariant variant calling on the trio samples
+fi
 #
-co_call_dir="$outdir/co_calling"
-mkdir -p $co_call_dir
-call_gatk_co_calling # do GATK call for co_calling of trio from gVCFs
+if [ "$run_function" -gt "1" ]; #
+then #
+	co_call_dir="$outdir/co_calling"
+	mkdir -p $co_call_dir
+	call_gatk_co_calling # do GATK call for co_calling of trio from gVCFs
+fi
 #
-famseq_dir="$outdir/famseq"
-mkdir -p $famseq_dir
-call_famseq # do FamSeq call for mendelian error correction for trio VCF
-#
+if [ "$run_function" -gt "2" ]; #
+then #
+	famseq_dir="$outdir/famseq"
+	mkdir -p $famseq_dir
+	call_famseq # do FamSeq call for mendelian error correction for trio VCF
+fi #
 
