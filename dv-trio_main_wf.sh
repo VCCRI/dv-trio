@@ -236,7 +236,7 @@ while getopts ':hi:r:o:t:b:f:' opt; do
 		ref="$OPTARG" 
 		ref_given=true;;
     f)
-		run_function="$OPTARG" 
+		run_function="$OPTARG" ;;
 
     o) 
         outdir="$OPTARG" 
