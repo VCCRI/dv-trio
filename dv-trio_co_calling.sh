@@ -96,7 +96,7 @@ tabix -p vcf $co_called_vcf
 #
 #clean up
 #
-rm -rf $TEMP_DIR #
+#rm -rf $TEMP_DIR #
 #
 echo "Trio co_calling completed."
 #
