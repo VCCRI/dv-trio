@@ -84,6 +84,14 @@ check_input ()
 ##
 call_deepvariant ()
 { #
+# determine how many shards to use for deepvariant
+ nshard=''
+ totcpu=$(grep -c ^processor /proc/cpuinfo)
+ echo "total cpu : $totcpu"
+ totcpu="$(($totcpu-1))"
+ echo "total cpu : $totcpu"
+ nshard="$(($totcpu / 3))"
+ echo "nshard : $nshard"
 #create the input files for each sample to Deepvariant calling
 #
  echo $outdir
@@ -112,15 +120,15 @@ call_deepvariant ()
 #
 # Do deepvariant variant calling
  echo "DeepVariant calling for ${father[1]} kicked off in background"
- #bash dv-trio_deepvariant_call.sh $father_dir/sample.txt &
+ #bash dv-trio_deepvariant_call.sh $father_dir/sample.txt $nshard &
  #sleep 30m #
 #
  echo "DeepVariant calling for ${mother[1]} kicked off in background"
- #bash dv-trio_deepvariant_call.sh $mother_dir/sample.txt &
+ #bash dv-trio_deepvariant_call.sh $mother_dir/sample.txt nshard &
  #sleep 30m #
 #
  echo "DeepVariant calling for ${child[1]}"
- #bash dv-trio_deepvariant_call.sh $child_dir/sample.txt 
+ #bash dv-trio_deepvariant_call.sh $child_dir/sample.txt nshard
 #
 # check if mother and father deepvariant call completed
 #
@@ -275,15 +283,6 @@ then #
 fi #
 #
 check_input # check the input file
-#
-# determine how many shards to use for deepvariant
-nshard=''
-totcpu=$(grep -c ^processor /proc/cpuinfo)
-echo "total cpu : $totcpu"
-totcpu="$(($totcpu-1))"
-echo "total cpu : $totcpu"
-nshard="$(($totcpu / 3))"
-echo "nshard : $nshard"
 #
 if [ "$run_function" -gt "0" ]; #
 then #

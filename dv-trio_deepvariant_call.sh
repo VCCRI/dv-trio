@@ -10,6 +10,7 @@ outdir=''
 
 # check the input file to see if it contain all samples details
 echo "input file : "$1
+echo "number of shards : "$2
 while read line;     # do while there are lines from input file
 do #
  read s_type other  <<< "$line" #
@@ -59,7 +60,7 @@ BIN_VERSION="0.7.2"
 MODEL_VERSION="0.7.2"
 MODEL_BUCKET="${BUCKET}/models/DeepVariant/${MODEL_VERSION}/DeepVariant-inception_v3-${MODEL_VERSION}+data-wgs_standard"
 
-N_SHARDS="4"
+N_SHARDS=$2
 
 # Download model into MODEL_DIR
 echo "Downloading model"
