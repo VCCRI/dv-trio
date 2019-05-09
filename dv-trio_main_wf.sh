@@ -282,7 +282,7 @@ totcpu=$(grep -c ^processor /proc/cpuinfo)
 echo "total cpu : $totcpu"
 totcpu="$(($totcpu-1))"
 echo "total cpu : $totcpu"
-nshard="$(($totcpu / 1))"
+nshard="$(($totcpu / 3))"
 echo "nshard : $nshard"
 #
 if [ "$run_function" -gt "0" ]; #
