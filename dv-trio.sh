@@ -95,9 +95,10 @@ call_deepvariant ()
 #create the input files for each sample to Deepvariant calling
 #
  echo $outdir
- child_dir="$outdir/${child[1]}"
- father_dir="$outdir/${father[1]}"
- mother_dir="$outdir/${mother[1]}"
+ mkdir -p $outdir
+ child_dir="$outdir/deepvariant/${child[1]}"
+ father_dir="$outdir/deepvariant/${father[1]}"
+ mother_dir="$outdir/deepvariant/${mother[1]}"
  echo "child dir : "$child_dir
  echo "father dir : "$father_dir
  echo "mother dir : "$mother_dir

@@ -36,7 +36,7 @@ echo "DV : "$absolute_outdir
 export PATH=${PATH}:$HOME/gsutil
 #
 # DeepVariant Locations
-BASE="${absolute_outdir}/deepvariant"
+BASE="${absolute_outdir}"
 TEMP_DIR="${BASE}/temp"
 OUTPUT_DIR="${BASE}/output"
 MODELS_DIR="${BASE}/models"
@@ -44,7 +44,7 @@ MODEL="${MODELS_DIR}/model.ckpt"
 LOG_DIR_BASE="${BASE}/logs"
 REF="${running_dir}/$ref"
 
-mkdir -p "${BASE}"
+#mkdir -p "${BASE}"
 mkdir -p "${TEMP_DIR}"
 mkdir -p "${OUTPUT_DIR}"
 mkdir -p "${MODELS_DIR}"
