@@ -1,6 +1,10 @@
 #!/bin/bash
 # dv-trio.sh
 
+#
+########################################################################################################
+# FUNCTION USAGE: output info/help display. Also used when error in inputs
+#
 usage() {
   # this function prints a usage summary, optionally printing an error message
   local ec=0
@@ -14,16 +18,13 @@ usage() {
 
   cat <<EOF
 Usage:
-       $(basename $0) -f father -m mother -c child -s sex -r reference [ -o output ] [ -t threshold ] [ -b bucket ]
+       $(basename $0) -i <input parameters file> -r <reference> [ -o output ] [ -t threshold ] [ -b bucket ]
 
 Post-processes trio calls made by DeepVariant to correct for Mendelian errors.
 
 Required arguments:
 
-  -f <father>     path to bam file of father sample
-  -m <mother>     path to bam file of mother sample
-  -c <child>      path to bam file of child sample
-  -s <sex>        sex of child (m/f)
+  -i <input parameters file>     path to input parameter file containing trio bam path
   -r <reference>  path to reference file
 
 Options:
@@ -35,32 +36,223 @@ EOF
 
   exit $ec
 }
+#
+########################################################################################################
+# FUNCTION CHECK_INPUT: check the input file to see if it contain all samples details
+#
+check_input ()
+{ #
+ while read line;     # do while there are lines from input file
+ do #
+  read s_type other  <<< "$line" #
+  if [ $s_type == "CHILD" ]; #
+  then #
+	read -d '\t' -r -a child  <<< "$line" #
+	child_given=true
+	echo "${child[@]}"
+  elif [ $s_type == "FATHER" ]; # 
+  then # No
+	read -d '\t' -r -a father  <<< "$line" #
+	father_given=true
+	echo "${father[@]}"
+  elif [ $s_type == "MOTHER" ]; # 
+  then # No
+	read -d '\t' -r -a mother  <<< "$line" #
+	mother_given=true
+	echo "${mother[@]}"
+  fi #
+ done < $input_file # 
+#
+# check if trio required parameters given
+ if [ "$child_given" = false ]; #
+ then #
+	usage 1 "child sample details required" 
+	exit
+ elif [ "$father_given" = false ]; #
+ then #
+	usage 1 "father sample details required" 
+	exit
+ elif [ "$mother_given" = false ]; #
+ then #
+	usage 1 "father sample details required" 
+	exit
+ fi #
+}
+#
+########################################################################################################
+# FUNCTION CALL_DEEPVARIANT: 
+##
+call_deepvariant ()
+{ #
+# determine how many shards to use for deepvariant
+ nshard=''
+ totcpu=$(grep -c ^processor /proc/cpuinfo)
+# echo "total cpu : $totcpu"
+ totcpu="$(($totcpu-1))"
+# echo "total cpu : $totcpu"
+ nshard="$(($totcpu / 3))"
+# echo "nshard : $nshard"
+#create the input files for each sample to Deepvariant calling
+#
+ echo $outdir
+ child_dir="$outdir/${child[1]}"
+ father_dir="$outdir/${father[1]}"
+ mother_dir="$outdir/${mother[1]}"
+ echo "child dir : "$child_dir
+ echo "father dir : "$father_dir
+ echo "mother dir : "$mother_dir
+#
+ samples=( $child_dir $father_dir $mother_dir )
+ IDs=(${child[1]} ${father[1]} ${mother[1]})
+ bams=(${child[2]} ${father[2]} ${mother[2]})
+ genders=(${child[3]} ${father[3]} ${mother[3]})
+ indices=( 0 1 2 )
+#
+ for index in ${indices[@]}
+ do
+	create_dir=${samples[$index]}
+	mkdir -p $create_dir
+#	touch $create_dir/sample.txt
+	echo -e "OUT\t$create_dir" > $create_dir/sample.txt
+	echo -e "REF\t$ref" >> $create_dir/sample.txt
+	echo -e "SAMPLE\t${IDs[$index]}\t${bams[$index]}\t${genders[$index]}" >> $create_dir/sample.txt
+ done
+#
+# Do deepvariant variant calling
+ echo "DeepVariant calling for ${father[1]} kicked off in background"
+ bash dv-trio_deepvariant_call.sh $father_dir/sample.txt $nshard &
+ sleep 30m #
+#
+ echo "DeepVariant calling for ${mother[1]} kicked off in background"
+ bash dv-trio_deepvariant_call.sh $mother_dir/sample.txt $nshard &
+ sleep 30m #
+#
+ echo "DeepVariant calling for ${child[1]}"
+ bash dv-trio_deepvariant_call.sh $child_dir/sample.txt $nshard
+#
+# check if mother and father deepvariant call completed
+#
+ father_complete=false
+ mother_complete=false
+#
+# check father
+ for i in {1..30} # check for 5 hrs max
+ do 
+	if [ -f $father_dir/${father[1]}"_done.txt" ]; # check if father done
+	then
+		father_complete=true
+		break
+	else
+		sleep 10m #
+	fi
+ done
+ if [ "$father_complete" = false ]; #
+ then #
+	usage 1 "father sample did not complete deepvariant" 
+	exit
+ fi
+ # check mother
+ for i in {1..30} # check for 5 hrs max
+ do 
+	if [ -f $mother_dir/${mother[1]}"_done.txt" ]; # check if mother done
+	then
+		mother_complete=true
+		break
+	else
+		sleep 10m #
+	fi
+ done
+ if [ "$mother_complete" = false ]; #
+ then #
+	usage 1 "mother sample did not complete deepvariant" 
+	exit
+ fi #
+#
+}
+#
+########################################################################################################
+# FUNCTION CALL_DEEPVARIANT: do GATK4 co_calling of gVCFs for trio
+##
+call_gatk_co_calling ()
+{ #
+#
+#build input file to co_calling task
+ #touch $co_call_dir/trio.txt
+ echo -e "OUT\t$co_call_dir" > $co_call_dir/trio.txt
+ echo -e "REF\t$ref" >> $co_call_dir/trio.txt
+ cat $child_dir/${child[1]}"_done.txt" >> $co_call_dir/trio.txt
+ cat $father_dir/${father[1]}"_done.txt" >> $co_call_dir/trio.txt
+ cat $mother_dir/${mother[1]}"_done.txt" >> $co_call_dir/trio.txt
+#
+ bash dv-trio_co_calling.sh $co_call_dir/trio.txt #
+#
+}
+#
+########################################################################################################
+# FUNCTION CALL_FAMSEQ: do FamSeq on co_call VCF for trio
+##
+call_famseq ()
+{ #
+#
+ #touch $famseq_dir/famseq_trio.txt
+#build famseq ped file
+ ped_file=$famseq_dir/famseq_trio.ped
+ #touch $ped_file
 
+ echo -e "ID\tmID\tfID\tgender\tIndividualName" > $ped_file
+ echo -e "1\t3\t2\t${child[3]}\t${child[1]}" >> $ped_file
+ echo -e "2\t0\t0\t1\t${father[1]}" >> $ped_file
+ echo -e "3\t0\t0\t2\t${mother[1]}" >> $ped_file
+#
+# build famseq input file
+ #touch $famseq_dir/famseq_trio.txt
+ echo -e "OUT\t$famseq_dir" > $famseq_dir/famseq_trio.txt
+ echo -e "REF\t$ref" >> $famseq_dir/famseq_trio.txt
+ echo -e "THOLD\t$Famseq_threshold" >> $famseq_dir/famseq_trio.txt
+ echo -e "PED\t$ped_file" >> $famseq_dir/famseq_trio.txt
+ cat $co_call_dir/trio_co_called_done.txt >> $famseq_dir/famseq_trio.txt
+#
+ bash dv-trio_famseq.sh $famseq_dir/famseq_trio.txt #
+}
+#
+###########################################################################################
+# MAIN
+###########################################################################################
 # Initialise variables
-father_path=''
+#
+input_given=false
+ref_given=false
+father_given=false
+mother_given=false
+child_given=false
 mother_path=''
 child_path=''
 child_sex=''
 ref=''
-threshold='0.3'
-outdir=$(dirname "$0")
+outdir=`pwd`
+Famseq_threshold='1.0'
+run_function='3'
 upload_to_bucket=false
 bucket=''
 
 # Handle parameters
-while getopts ':hf:m:c:s:r:o:t:b:' opt; do
+while getopts ':hi:r:o:t:b:f:' opt; do
   case "$opt" in 
-    f) father_path="$OPTARG" ;;
-    m) mother_path="$OPTARG" ;;
-    c) child_path="$OPTARG" ;;
-    s) child_sex="$OPTARG" ;;
-    r) ref="$OPTARG" ;;
+    i)
+		input_file="$OPTARG" 
+		input_given=true
+		;;
+    r)
+		ref="$OPTARG" 
+		ref_given=true;;
+    f)
+		run_function="$OPTARG" ;;
 
     o) 
         outdir="$OPTARG" 
         echo "getting outdir ${outdir}"
         ;;
-    t) threshold="$OPTARG" ;;
+    t) Famseq_threshold="$OPTARG" ;;
     b)
         bucket="$OPTARG"
         upload_to_bucket=true
@@ -79,223 +271,35 @@ while getopts ':hf:m:c:s:r:o:t:b:' opt; do
 done
 
 shift $((OPTIND -1))
-
-
-Get sample names of samples
-father_sample=`samtools view -H $father_path | grep '^@RG' | sed "s/.*SM:\([^\t]*\).*/\1/g" | uniq`
-mother_sample=`samtools view -H $mother_path | grep '^@RG' | sed "s/.*SM:\([^\t]*\).*/\1/g" | uniq`
-child_sample=`samtools view -H $child_path | grep '^@RG' | sed "s/.*SM:\([^\t]*\).*/\1/g" | uniq`
-
-running_dir=`pwd`
-absolute_outdir=`pwd`/$outdir
-echo $absolute_outdir
+# check if all required parameters given
+if [ "$input_given" = false ]; #
+then #
+	usage 1 "-i requires an argument" 
+	exit
+elif [ "$ref_given" = false ]; #
+then #
+	usage 1 "-r requires an argument" 
+	exit
+fi #
 #
-export PATH=${PATH}:$HOME/gsutil
+check_input # check the input file
 #
-# DeepVariant Locations
-BASE="${absolute_outdir}/deepvariant"
-TEMP_DIR="${BASE}/temp"
-OUTPUT_DIR="${BASE}/output"
-MODELS_DIR="${BASE}/models"
-MODEL="${MODELS_DIR}/model.ckpt"
-LOG_DIR_BASE="${BASE}/logs"
-REF="${running_dir}/$ref"
-
-mkdir -p "${TEMP_DIR}"
-mkdir -p "${OUTPUT_DIR}"
-mkdir -p "${MODELS_DIR}"
-mkdir -p "${LOG_DIR_BASE}"
-
-echo "${TEMP_DIR}"
-echo "${OUTPUT_DIR}"
-echo "${MODELS_DIR}"
-echo "${LOG_DIR_BASE}"
-
-BUCKET="gs://deepvariant"
-BIN_VERSION="0.7.2"
-MODEL_VERSION="0.7.2"
-MODEL_BUCKET="${BUCKET}/models/DeepVariant/${MODEL_VERSION}/DeepVariant-inception_v3-${MODEL_VERSION}+data-wgs_standard"
-
-N_SHARDS="12"
-
-# Download model into MODEL_DIR
-echo "Downloading model"
-cd "${MODELS_DIR}"
-gsutil -m cp -r "${MODEL_BUCKET}/*" .
-echo "Done downloading model"
-
-# S3 bucket to store output
-BUCKET_OUTPUT=bucket
-
-
-cd "${BASE}"
-samples=( $child_sample $father_sample $mother_sample )
-bams=( $child_path $father_path $mother_path )
-indices=( 0 1 2 )
-
-for index in ${indices[@]}
-do
-    SAMPLE=${samples[$index]}
-    BAM="${running_dir}/${bams[$index]}"
-
-    echo "DOING ${SAMPLE} now from ${BAM}..."
-
-    EXAMPLES="${TEMP_DIR}/${SAMPLE}.examples.tfrecord@${N_SHARDS}.gz"
-    GVCF_TFRECORDS="${TEMP_DIR}/${SAMPLE}.gvcf.tfrecord@${N_SHARDS}.gz"
-    CALL_VARIANTS_OUTPUT="${TEMP_DIR}/${SAMPLE}.cvo.tfrecord.gz"
-    OUTPUT_VCF="${OUTPUT_DIR}/${SAMPLE}.output.vcf.gz"
-    OUTPUT_GVCF="${OUTPUT_DIR}/${SAMPLE}.output.g.vcf.gz"
-    LOG_DIR="${LOG_DIR_BASE}/${SAMPLE}"
-    mkdir -p $LOG_DIR
-
-
-    ####### ----------------------------- MAKE_EXAMPLES --------------------------------- #######
-
-    echo "Running DeepVariant MAKE EXAMPLES..."
-
-    # run make_examples
-    cd "${BASE}"
-    ( time seq 0 $((N_SHARDS-1)) | \
-    parallel --halt 2 --joblog "${LOG_DIR}/log" --res "${LOG_DIR}" \
-        sudo docker run \
-        -v /home/${USER}:/home/${USER} \
-        gcr.io/deepvariant-docker/deepvariant:"${BIN_VERSION}" \
-        /opt/deepvariant/bin/make_examples \
-        --mode calling \
-        --ref "${REF}" \
-        --reads "${BAM}" \
-        --examples "${EXAMPLES}" \
-        --sample_name "${SAMPLE}" \
-        --gvcf "${GVCF_TFRECORDS}" \
-        --task {} \
-    ) >"${LOG_DIR}/make_examples_${SAMPLE}.log" 2>&1
-
-
-    ####### ------------------------------ CALL_VARIANTS -------------------------------- #######
-
-    echo "Running DeepVariant CALL VARIANTS..."
-
-    # run call_variants
-    cd "${BASE}"
-    ( time sudo docker run \
-        -v /home/${USER}:/home/${USER} \
-        gcr.io/deepvariant-docker/deepvariant:"${BIN_VERSION}" \
-        /opt/deepvariant/bin/call_variants \
-        --outfile "${CALL_VARIANTS_OUTPUT}" \
-        --examples "${EXAMPLES}" \
-        --checkpoint "${MODEL}" \
-    ) >"${LOG_DIR}/call_variants_${SAMPLE}.log" 2>&1
-
-
-    ####### ------------------------- POSTPROCESS_VARIANTS ---------------------------- #######
-
-    echo "Running DeepVariant POSTPROCESS VARIANTS..."
-
-    # run postprocess_variants
-    cd "${BASE}"
-    ( time sudo docker run \
-        -v /home/${USER}:/home/${USER} \
-        gcr.io/deepvariant-docker/deepvariant:"${BIN_VERSION}" \
-        /opt/deepvariant/bin/postprocess_variants \
-        --ref "${REF}" \
-        --infile "${CALL_VARIANTS_OUTPUT}" \
-        --outfile "${OUTPUT_VCF}" \
-        --nonvariant_site_tfrecord_path "${GVCF_TFRECORDS}" \
-        --gvcf_outfile "${OUTPUT_GVCF}" \
-   ) >"${LOG_DIR}/postprocess_variants_${SAMPLE}.log" 2>&1
-
-done
-
-echo "DeepVariant run completed."
-
-# Write to S3 bucket
-if [ upload_to_bucket = true ] ; then
-    echo "Writing DeepVariant output to S3 Bucket"
-    aws s3 cp "${OUTPUT_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
-    aws s3 cp "${LOG_DIR}" s3://${BUCKET_OUTPUT}/DeepVariant/
+if [ "$run_function" -gt "0" ]; #
+then #
+	call_deepvariant # do deepvariant variant calling on the trio samples
 fi
-
-
-# POSTPROCESING
-
-echo "Starting postprocessing!"
-
-# Postprocessing Locations
-PP_BASE="${absolute_outdir}/postprocessing"
-PP_TEMP_DIR="${PP_BASE}/temp"
-PP_OUTPUT_DIR="${PP_BASE}/output"
-PP_LOG_DIR="${PP_BASE}/logs"
-
-temp="${outdir}/temp"
-mkdir -p $PP_BASE
-mkdir -p $PP_TEMP_DIR
-mkdir -p $PP_OUTPUT_DIR
-mkdir -p $PP_LOG_DIR
-
-triple_name="${child_sample}_${father_sample}_${mother_sample}"
-
-MERGED_VCF="${PP_TEMP_DIR}/${triple_name}.vcf"
-
-father_vcf="${OUTPUT_DIR}/${father_sample}.output.vcf.gz"
-mother_vcf="${OUTPUT_DIR}/${mother_sample}.output.vcf.gz"
-child_vcf="${OUTPUT_DIR}/${child_sample}.output.vcf.gz"
-
-zcat $father_vcf > "${PP_TEMP_DIR}/${father_sample}.output.vcf"
-zcat $mother_vcf > "${PP_TEMP_DIR}/${mother_sample}.output.vcf"
-zcat $child_vcf > "${PP_TEMP_DIR}/${child_sample}.output.vcf"
-
-vcfs=( $child_sample $father_sample $mother_sample )
-
-processed_vcfs_args=""
-
-echo "Decomposing and normalising samples..."
-# Decompose and normalise all vcfs
-for i in ${vcfs[@]}
-do
-    vt decompose -s ${PP_TEMP_DIR}/${i}.output.vcf -o ${PP_TEMP_DIR}/${i}.dec.vcf 
-    vt decompose_blocksub -a ${PP_TEMP_DIR}/${i}.dec.vcf -o ${PP_TEMP_DIR}/${i}.bs.vcf
-    vt normalize ${PP_TEMP_DIR}/${i}.bs.vcf -r ${REF} | vt uniq - -o ${PP_TEMP_DIR}/${i}.processed.vcf
-    bgzip ${PP_TEMP_DIR}/${i}.processed.vcf
-    tabix -p vcf ${PP_TEMP_DIR}/${i}.processed.vcf.gz
-    processed_vcfs_args+="${PP_TEMP_DIR}/${i}.processed.vcf.gz "
-done
-
-echo $processed_vcfs_args
-
-
-echo "Generating pedigree file..."
-# Generate pedigree file for FamSeq
-ped_file="${PP_TEMP_DIR}/${triple_name}.ped"
-touch $ped_file
-cp /dev/null $ped_file
-
-gender_num="2"
-if [ $child_sex == "m" ] 
-then
-    gender_num="1"
+#
+if [ "$run_function" -gt "1" ]; #
+then #
+	co_call_dir="$outdir/co_calling"
+	mkdir -p $co_call_dir
+	call_gatk_co_calling # do GATK call for co_calling of trio from gVCFs
 fi
+#
+if [ "$run_function" -gt "2" ]; #
+then #
+	famseq_dir="$outdir/famseq"
+	mkdir -p $famseq_dir
+	call_famseq # do FamSeq call for mendelian error correction for trio VCF
+fi #
 
-echo -e "ID\tmID\tfID\tgender\tIndividualName" >> $ped_file
-echo -e "1\t3\t2\t${gender_num}\t${child_sample}" >> $ped_file
-echo -e "2\t0\t0\t1\t${father_sample}" >> $ped_file
-echo -e "3\t0\t0\t2\t${mother_sample}" >> $ped_file
-
-
-echo "Merging..."
-# Merging
-vcf-merge $processed_vcfs_args > ${MERGED_VCF}
-
-
-echo "Running FamSeq..."
-FAMSEQ_OUTPUT="${PP_OUTPUT_DIR}/${triple_name}.FamSeq.vcf"
-FamSeq vcf -vcfFile $MERGED_VCF -pedFile $ped_file -output ${FAMSEQ_OUTPUT} -a -LRC ${threshold}
-sed -i 's/[ \t]*$//' $FAMSEQ_OUTPUT
-
-# Write to S3 bucket
-if [ upload_to_bucket = true ] ; then
-    echo "Writing Postprocessing output to S3 Bucket"
-    aws s3 cp "${PP_OUTPUT_DIR}" s3://${BUCKET_OUTPUT}/dv-trio/
-    aws s3 cp "${PP_LOG_DIR}" s3://${BUCKET_OUTPUT}/dv-trio/
-fi
-
-echo "All done!"
