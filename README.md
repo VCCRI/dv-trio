@@ -42,13 +42,16 @@ See template input file GIAB_trio_file.txt
 
 ## References 
 
- [1.]  R. Poplin, P.-C. Chang, D. Alexander, S. Schwartz, T. Colthurst, A. Ku, D. Newburger,
+ 
+
+ 1. R. Poplin, P.-C. Chang, D. Alexander, S. Schwartz, T. Colthurst, A. Ku, D. Newburger,
 J. Dijamco, N. Nguyen, P. T. Afshar, et al. A universal snp and small-indel
 variant caller using deep neural networks. Nature biotechnology, 2018.
- [2.]  M. A. DePristo, E. Banks, R. Poplin, K. V. Garimella, J. R. Maguire, C. Hartl, A. A.
+ 
+ 2. M. A. DePristo, E. Banks, R. Poplin, K. V. Garimella, J. R. Maguire, C. Hartl, A. A.
 Philippakis, G. Del Angel, M. A. Rivas, M. Hanna, et al. A framework for variation
 discovery and genotyping using next-generation dna sequencing data. Nature genetics,
 43(5):491–498, 2011. 
- [3.] G. Peng, Y. Fan, and W. Wang. Famseq: a variant calling program for familybased
+ 3. G. Peng, Y. Fan, and W. Wang. Famseq: a variant calling program for familybased
 sequencing data using graphics processing units. PLoS computational biology,
 10(10):e1003880, 2014.
