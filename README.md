@@ -27,7 +27,7 @@ Options:
   -h              this help message
 ```
 ## Input Parameter File
-A **tab delimited** text file contains details regarding the trio samples
+A **tab delimited** text file containing details regarding the trio samples
 
  - Sample ID
  - Sample Bam location 
