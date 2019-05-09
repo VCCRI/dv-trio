@@ -120,15 +120,15 @@ call_deepvariant ()
 #
 # Do deepvariant variant calling
  echo "DeepVariant calling for ${father[1]} kicked off in background"
- #bash dv-trio_deepvariant_call.sh $father_dir/sample.txt $nshard &
- #sleep 30m #
+ bash dv-trio_deepvariant_call.sh $father_dir/sample.txt $nshard &
+ sleep 30m #
 #
  echo "DeepVariant calling for ${mother[1]} kicked off in background"
- #bash dv-trio_deepvariant_call.sh $mother_dir/sample.txt nshard &
- #sleep 30m #
+ bash dv-trio_deepvariant_call.sh $mother_dir/sample.txt $nshard &
+ sleep 30m #
 #
  echo "DeepVariant calling for ${child[1]}"
- #bash dv-trio_deepvariant_call.sh $child_dir/sample.txt nshard
+ bash dv-trio_deepvariant_call.sh $child_dir/sample.txt $nshard
 #
 # check if mother and father deepvariant call completed
 #
