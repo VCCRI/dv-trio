@@ -104,8 +104,8 @@ call_deepvariant ()
  do
 	create_dir=${samples[$index]}
 	mkdir -p $create_dir
-	touch $create_dir/sample.txt
-	echo -e "OUT\t$create_dir" >> $create_dir/sample.txt
+#	touch $create_dir/sample.txt
+	echo -e "OUT\t$create_dir" > $create_dir/sample.txt
 	echo -e "REF\t$ref" >> $create_dir/sample.txt
 	echo -e "SAMPLE\t${IDs[$index]}\t${bams[$index]}\t${genders[$index]}" >> $create_dir/sample.txt
  done
@@ -169,8 +169,8 @@ call_gatk_co_calling ()
 { #
 #
 #build input file to co_calling task
- touch $co_call_dir/trio.txt
- echo -e "OUT\t$co_call_dir" >> $co_call_dir/trio.txt
+ #touch $co_call_dir/trio.txt
+ echo -e "OUT\t$co_call_dir" > $co_call_dir/trio.txt
  echo -e "REF\t$ref" >> $co_call_dir/trio.txt
  cat $child_dir/${child[1]}"_done.txt" >> $co_call_dir/trio.txt
  cat $father_dir/${father[1]}"_done.txt" >> $co_call_dir/trio.txt
@@ -186,19 +186,19 @@ call_gatk_co_calling ()
 call_famseq ()
 { #
 #
- touch $famseq_dir/famseq_trio.txt
+ #touch $famseq_dir/famseq_trio.txt
 #build famseq ped file
  ped_file=$famseq_dir/famseq_trio.ped
- touch $ped_file
+ #touch $ped_file
 
- echo -e "ID\tmID\tfID\tgender\tIndividualName" >> $ped_file
+ echo -e "ID\tmID\tfID\tgender\tIndividualName" > $ped_file
  echo -e "1\t3\t2\t${child[3]}\t${child[1]}" >> $ped_file
  echo -e "2\t0\t0\t1\t${father[1]}" >> $ped_file
  echo -e "3\t0\t0\t2\t${mother[1]}" >> $ped_file
 #
 # build famseq input file
- touch $famseq_dir/famseq_trio.txt
- echo -e "OUT\t$famseq_dir" >> $famseq_dir/famseq_trio.txt
+ #touch $famseq_dir/famseq_trio.txt
+ echo -e "OUT\t$famseq_dir" > $famseq_dir/famseq_trio.txt
  echo -e "REF\t$ref" >> $famseq_dir/famseq_trio.txt
  echo -e "THOLD\t$Famseq_threshold" >> $famseq_dir/famseq_trio.txt
  echo -e "PED\t$ped_file" >> $famseq_dir/famseq_trio.txt
