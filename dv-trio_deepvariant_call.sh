@@ -10,7 +10,7 @@ outdir=''
 
 # check the input file to see if it contain all samples details
 echo "input file : "$1
-echo "number of shards : "$2
+echo "number of deepvariant shards : "$2
 while read line;     # do while there are lines from input file
 do #
  read s_type other  <<< "$line" #
@@ -89,7 +89,7 @@ mkdir -p $LOG_DIR
 
     ####### ----------------------------- MAKE_EXAMPLES --------------------------------- #######
 
-echo "Running DeepVariant MAKE EXAMPLES..."
+echo "Running DeepVariant MAKE EXAMPLES for ${SAMPLE}..."
 
 # run make_examples
 cd "${BASE}"
@@ -110,7 +110,7 @@ parallel --halt 2 --joblog "${LOG_DIR}/log" --res "${LOG_DIR}" \
 
     ####### ------------------------------ CALL_VARIANTS -------------------------------- #######
 
-echo "Running DeepVariant CALL VARIANTS..."
+echo "Running DeepVariant CALL VARIANTS for ${SAMPLE}..."
 
 # run call_variants
 cd "${BASE}"
@@ -125,7 +125,7 @@ cd "${BASE}"
 
     ####### ------------------------- POSTPROCESS_VARIANTS ---------------------------- #######
 
-echo "Running DeepVariant POSTPROCESS VARIANTS..."
+echo "Running DeepVariant POSTPROCESS VARIANTS for ${SAMPLE}..."
 
     # run postprocess_variants
 cd "${BASE}"
@@ -140,6 +140,9 @@ cd "${BASE}"
     --gvcf_outfile "${OUTPUT_GVCF}" \
 ) >"${LOG_DIR}/postprocess_variants_${SAMPLE}.log" 2>&1
 
+#
+###############################################################################################
+#
 echo "DeepVariant run completed for $s_id"
 #touch $absolute_outdir/$s_id"_done.txt" #
 echo -e "GVCF\t$OUTPUT_GVCF" > $absolute_outdir/$s_id"_done.txt"
