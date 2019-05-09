@@ -276,6 +276,15 @@ fi #
 #
 check_input # check the input file
 #
+# determine how many shards to use for deepvariant
+nshard=''
+totcpu=$(grep -c ^processor /proc/cpuinfo)
+echo "total cpu : $totcpu"
+totcpu="$(($totcpu-1))"
+echo "total cpu : $totcpu"
+nshard="$(($totcpu / 1))"
+echo "nshard : $nshard"
+#
 if [ "$run_function" -gt "0" ]; #
 then #
 	call_deepvariant # do deepvariant variant calling on the trio samples
