@@ -127,37 +127,39 @@ call_deepvariant ()
  father_complete=false
  mother_complete=false
 #
+# check father
  for i in {1..30} # check for 5 hrs max
  do 
-	sleep 10m #
-	if [ -f $father_dir/${father[1]}"_done.txt"]; # check if father done
+	if [ -f $father_dir/${father[1]}"_done.txt" ]; # check if father done
 	then
 		father_complete=true
 		break
+	else
+		sleep 10m #
 	fi
  done
-#
- for i in {1..30} # check for 5 hrs max
- do 
-	sleep 10m #
-	if [ -f $mother_dir/${mother[1]}"_done.txt"]; # check if mother done
-	then
-		mother_complete=true
-		break
-	fi
- done
-#
-#check to see if the trio is ready for GATK4 co_calling of gVCFs for trio
-#
  if [ "$father_complete" = false ]; #
  then #
 	usage 1 "father sample did not complete deepvariant" 
 	exit
- elif [ "$mother_complete" = false ]; #
+ fi
+ # check mother
+ for i in {1..30} # check for 5 hrs max
+ do 
+	if [ -f $mother_dir/${mother[1]}"_done.txt" ]; # check if mother done
+	then
+		mother_complete=true
+		break
+	else
+		sleep 10m #
+	fi
+ done
+ if [ "$mother_complete" = false ]; #
  then #
 	usage 1 "mother sample did not complete deepvariant" 
 	exit
  fi #
+#
 }
 #
 ########################################################################################################
