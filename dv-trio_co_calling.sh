@@ -99,6 +99,6 @@ tabix -p vcf $co_called_vcf
 #
 echo "Trio co_calling completed."
 #
-touch $COCALL_DIR/trio_co_called_done.txt #
-echo -e "CCALL\t$co_called_vcf" >> $COCALL_DIR/trio_co_called_done.txt
+#touch $COCALL_DIR/trio_co_called_done.txt #
+echo -e "CCALL\t$co_called_vcf" > $COCALL_DIR/trio_co_called_done.txt
 #

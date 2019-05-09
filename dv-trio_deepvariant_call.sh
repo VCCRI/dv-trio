@@ -140,7 +140,7 @@ cd "${BASE}"
 ) >"${LOG_DIR}/postprocess_variants_${SAMPLE}.log" 2>&1
 
 echo "DeepVariant run completed for $s_id"
-touch $absolute_outdir/$s_id"_done.txt" #
-echo -e "GVCF\t$OUTPUT_GVCF" >> $absolute_outdir/$s_id"_done.txt"
+#touch $absolute_outdir/$s_id"_done.txt" #
+echo -e "GVCF\t$OUTPUT_GVCF" > $absolute_outdir/$s_id"_done.txt"
 #echo 
 
