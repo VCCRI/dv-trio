@@ -112,15 +112,15 @@ call_deepvariant ()
 #
 # Do deepvariant variant calling
  echo "DeepVariant calling for ${father[1]} kicked off in background"
- bash dv-trio_deepvariant_call.sh $father_dir/sample.txt &
- sleep 30m #
+ #bash dv-trio_deepvariant_call.sh $father_dir/sample.txt &
+ #sleep 30m #
 #
  echo "DeepVariant calling for ${mother[1]} kicked off in background"
- bash dv-trio_deepvariant_call.sh $mother_dir/sample.txt &
- sleep 30m #
+ #bash dv-trio_deepvariant_call.sh $mother_dir/sample.txt &
+ #sleep 30m #
 #
  echo "DeepVariant calling for ${child[1]}"
- bash dv-trio_deepvariant_call.sh $child_dir/sample.txt 
+ #bash dv-trio_deepvariant_call.sh $child_dir/sample.txt 
 #
 # check if mother and father deepvariant call completed
 #
@@ -130,7 +130,7 @@ call_deepvariant ()
  for i in {1..30} # check for 5 hrs max
  do 
 	sleep 10m #
-	if [-f $father_dir/${father[1]}"_done.txt"]; # check if father done
+	if [ -f $father_dir/${father[1]}"_done.txt"]; # check if father done
 	then
 		father_complete=true
 		break
@@ -140,7 +140,7 @@ call_deepvariant ()
  for i in {1..30} # check for 5 hrs max
  do 
 	sleep 10m #
-	if [-f $mother_dir/${mother[1]}"_done.txt"]; # check if mother done
+	if [ -f $mother_dir/${mother[1]}"_done.txt"]; # check if mother done
 	then
 		mother_complete=true
 		break

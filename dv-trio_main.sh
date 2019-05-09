@@ -177,7 +177,7 @@ mother_complete=false
 for i in {1..30} # check for 5 hrs max
 do 
 	sleep 10m #
-	if [-f $father_dir/${father[1]}"_done.txt"]; # check if father done
+	if [ -f $father_dir/${father[1]}"_done.txt"]; # check if father done
 	then
 		father_complete=true
 		break
@@ -187,7 +187,7 @@ done
 for i in {1..30} # check for 5 hrs max
 do 
 	sleep 10m #
-	if [-f $mother_dir/${mother[1]}"_done.txt"]; # check if father done
+	if [ -f $mother_dir/${mother[1]}"_done.txt"]; # check if father done
 	then
 		mother_complete=true
 		break
