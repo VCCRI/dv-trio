@@ -88,7 +88,6 @@ co_called_vcf="${COCALL_DIR}/trio_co_called.vcf.gz"
 #
 gatk-4.1.2.0/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$PBS_JOBFS" GenotypeGVCFs \
 -R $ref \
--D "/g/data3/a32/References_and_Databases/GATK_bundle/hg38/beta/Homo_sapiens_assembly38.dbsnp138.vcf.gz" \
 -V $merge_gvcf \
 -O $co_called_vcf
 #
