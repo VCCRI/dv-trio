@@ -33,10 +33,10 @@ A **tab delimited** text file contains details regarding the trio samples
  - Sample Bam location 
  - Sample Gender (1 - male, 2 - female)
 
-#Sample	Sample_ID	Sample_bam_location	Sample_gender
-CHILD	HG002	/home/ubuntu/GIAB_bams/HG002.GRCh38.60x.1.RG.bam	1
-FATHER	HG003	/home/ubuntu/GIAB_bams/HG003.GRCh38.60x.1.RG.bam	1
-MOTHER	HG004	/home/ubuntu/GIAB_bams/HG004.GRCh38.60x.1.RG.bam	2
+#Sample	Sample_ID	Sample_bam_location	Sample_gender  
+CHILD	HG002	/home/ubuntu/GIAB_bams/HG002.GRCh38.60x.1.RG.bam	1  
+FATHER	HG003	/home/ubuntu/GIAB_bams/HG003.GRCh38.60x.1.RG.bam	1  
+MOTHER	HG004	/home/ubuntu/GIAB_bams/HG004.GRCh38.60x.1.RG.bam	2  
 
 See template input file GIAB_trio_file.txt
 
