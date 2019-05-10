@@ -59,5 +59,7 @@ FAMSEQ_OUTPUT="${FAMSEQ_DIR}/trio.FamSeq.vcf"
 FamSeq vcf -vcfFile $TEMP_DIR/famseq_input.dec.bs.processed.corr.vcf -pedFile $ped -output ${FAMSEQ_OUTPUT} -a -LRC ${threshold}
 sed -i 's/[ \t]*$//' $FAMSEQ_OUTPUT #
 sed -i 's|PP\,Number\=G\,Type\=Integer|PP\,Number\=G\,Type\=Float|g' $FAMSEQ_OUTPUT #
-
+###################
+echo -e "OUT\t$FAMSEQ_OUTPUT" > $FAMSEQ_DIR/famseq_done.txt
 echo "All done!"
+
