@@ -14,6 +14,7 @@ s2_p=false
 s3_p=false
 
 # check the input file to see if it contain all samples details
+echo "$(date) - Trio co_calling started."
 echo "input file : "$input
 while read line;     # do while there are lines from input file
 do #
@@ -97,7 +98,7 @@ tabix -p vcf $co_called_vcf
 #
 #rm -rf $TEMP_DIR #
 #
-echo "Trio co_calling completed."
+echo "$(date) - Trio co_calling completed."
 #
 #touch $COCALL_DIR/trio_co_called_done.txt #
 echo -e "CCALL\t$co_called_vcf" > $COCALL_DIR/trio_co_called_done.txt

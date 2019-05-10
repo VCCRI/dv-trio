@@ -7,7 +7,7 @@ ped=''
 threshold='1.0'
 ref=''
 FAMSEQ_DIR='' #
-echo "Starting famseq postprocessing!"
+echo "$(date) - Starting famseq postprocessing!"
 #
 # check the input file to see if it contain all samples details
 echo "input file : "$input
@@ -61,5 +61,5 @@ sed -i 's/[ \t]*$//' $FAMSEQ_OUTPUT #
 sed -i 's|PP\,Number\=G\,Type\=Integer|PP\,Number\=G\,Type\=Float|g' $FAMSEQ_OUTPUT #
 ###################
 echo -e "OUT\t$FAMSEQ_OUTPUT" > $FAMSEQ_DIR/famseq_done.txt
-echo "All done!"
+echo "$(date) - FamSeq completed"
 

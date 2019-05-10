@@ -76,7 +76,7 @@ cd "${BASE}"
 SAMPLE=$s_id
 BAM=$s_bam
 
-echo "DOING ${SAMPLE} now from ${BAM}..."
+echo "$(date) - DOING ${SAMPLE} now from ${BAM}..."
 
 EXAMPLES="${TEMP_DIR}/${SAMPLE}.examples.tfrecord@${N_SHARDS}.gz"
 GVCF_TFRECORDS="${TEMP_DIR}/${SAMPLE}.gvcf.tfrecord@${N_SHARDS}.gz"
@@ -89,7 +89,7 @@ mkdir -p $LOG_DIR
 
     ####### ----------------------------- MAKE_EXAMPLES --------------------------------- #######
 
-echo "Running DeepVariant MAKE EXAMPLES for ${SAMPLE}..."
+echo "$(date) - Running DeepVariant MAKE EXAMPLES for ${SAMPLE}..."
 
 # run make_examples
 cd "${BASE}"
@@ -110,7 +110,7 @@ parallel --halt 2 --joblog "${LOG_DIR}/log" --res "${LOG_DIR}" \
 
     ####### ------------------------------ CALL_VARIANTS -------------------------------- #######
 
-echo "Running DeepVariant CALL VARIANTS for ${SAMPLE}..."
+echo "$(date) - Running DeepVariant CALL VARIANTS for ${SAMPLE}..."
 
 # run call_variants
 cd "${BASE}"
@@ -125,7 +125,7 @@ cd "${BASE}"
 
     ####### ------------------------- POSTPROCESS_VARIANTS ---------------------------- #######
 
-echo "Running DeepVariant POSTPROCESS VARIANTS for ${SAMPLE}..."
+echo "$(date) - Running DeepVariant POSTPROCESS VARIANTS for ${SAMPLE}..."
 
     # run postprocess_variants
 cd "${BASE}"
@@ -143,7 +143,7 @@ cd "${BASE}"
 #
 ###############################################################################################
 #
-echo "DeepVariant run completed for $s_id"
+echo "$(date) - DeepVariant run completed for $s_id"
 #touch $absolute_outdir/$s_id"_done.txt" #
 echo -e "GVCF\t$OUTPUT_GVCF" > $absolute_outdir/$s_id"_done.txt"
 #echo 
