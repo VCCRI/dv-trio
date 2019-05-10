@@ -4,12 +4,12 @@
 dv-trio provides a pipeline to call variants for a trio (father-mother-child) using DeepVariants [1]. Genomic Variant Calling Files (gVCFs) created by DeepVariants are then co_called together using GATK[2]. The resultant trio VCF is then post-processing with FamSeq[3] to eliminate mendelian errors.
 
 ## Installation
-Clone this repository into your cloud instance and run the `bash install_dependencies.sh` script. This will install all dependencies onto your instance's PATH.
+Clone this repository into your cloud instance and run the `install_dependencies.sh` script. This will install all dependencies onto your instance's PATH.
 
 ## Usage
 ```
 Usage:
-       bash dv-trio.sh -i <input parameter file> -r <reference> [ -o <output directory name> ] [ -t <threshold> ] [ -b <bucket> ]
+       dv-trio.sh -i <input parameter file> -r <reference> [ -o <output directory name> ] [ -t <threshold> ] [ -b <bucket> ]
 
 Post-processes trio calls made by DeepVariant to correct for Mendelian errors.
 
@@ -27,7 +27,7 @@ Options:
   -h              this help message
 ```
 ## Input Parameter File
-A **tab delimited** text file containing details regarding the trio samples
+A **tab delimited** text file contains details regarding the trio samples
 
  - Sample ID
  - Sample Bam location 
@@ -40,9 +40,15 @@ MOTHER	HG004	/home/ubuntu/GIAB_bams/HG004.GRCh38.60x.1.RG.bam	2
 
 See template input file GIAB_trio_file.txt
 
-## References 
+## Cloud instance recommendation
+We were able to successfully run dv-trio for a WGS trio under the following machine condition.
 
- 
+Samples : Genome in a Bottle Consortium's AshkenazimTrio - HG002/HG003/HG004 
+Virtual Machine :  **AWS** - Ubuntu Server 18.04 LTS (HVM), SSD Volume Type - 64-bit (x86)
+Instance Type : Compute Optimized - C5.9xlarge - 36 vCPUs, 72GB Memory
+Instance Storage : 1000GB (at least two times the size of the bam files size) 
+
+## References 
 
  1. R. Poplin, P.-C. Chang, D. Alexander, S. Schwartz, T. Colthurst, A. Ku, D. Newburger,
 J. Dijamco, N. Nguyen, P. T. Afshar, et al. A universal snp and small-indel
