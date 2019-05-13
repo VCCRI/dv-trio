@@ -122,11 +122,11 @@ call_deepvariant ()
 # Do deepvariant variant calling
  echo "$(date) - DeepVariant calling for ${father[1]} kicked off in background"
  bash dv-trio_deepvariant_call.sh $father_dir/sample.txt $nshard &
- sleep 30m #
+ sleep 10m #
 #
  echo "$(date) - DeepVariant calling for ${mother[1]} kicked off in background"
  bash dv-trio_deepvariant_call.sh $mother_dir/sample.txt $nshard &
- sleep 30m #
+ sleep 10m #
 #
  echo "$(date) - DeepVariant calling for ${child[1]}"
  bash dv-trio_deepvariant_call.sh $child_dir/sample.txt $nshard
