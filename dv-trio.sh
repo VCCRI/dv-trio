@@ -313,21 +313,21 @@ then #
 	child_dir="$outdir/deepvariant/${child[1]}"
 	father_dir="$outdir/deepvariant/${father[1]}"
 	mother_dir="$outdir/deepvariant/${mother[1]}"
-#	call_deepvariant # do deepvariant variant calling on the trio samples
+	call_deepvariant # do deepvariant variant calling on the trio samples
 fi
 #
 if [ "$run_function" -gt "1" ]; #
 then #
 	co_call_dir="$outdir/co_calling"
 	mkdir -p $co_call_dir
-#	call_gatk_co_calling # do GATK call for co_calling of trio from gVCFs
+	call_gatk_co_calling # do GATK call for co_calling of trio from gVCFs
 fi
 #
 if [ "$run_function" -gt "2" ]; #
 then #
 	famseq_dir="$outdir/famseq"
 	mkdir -p $famseq_dir
-#	call_famseq # do FamSeq call for mendelian error correction for trio VCF
+	call_famseq # do FamSeq call for mendelian error correction for trio VCF
 fi #
 #
 if [ "$cleanup_file" = true ]; #
@@ -336,10 +336,11 @@ then #
 fi
 #
 # Write to S3 bucket
-if [ upload_to_bucket = true ] ; then
+if [ "$upload_to_bucket" = true ]; #
+then #
     echo "Writing Postprocessing output to S3 Bucket"
     aws s3 cp "${outdir}" s3://${BUCKET_OUTPUT}/dv-trio/
 fi
-
+#
 echo "$(date) - dv-trio completed"
 #
