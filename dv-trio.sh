@@ -215,6 +215,28 @@ call_famseq ()
 #
  bash dv-trio_famseq.sh $famseq_dir/famseq_trio.txt #
 }
+########################################################################################################
+# FUNCTION CLEANUP: cleanup all the temp files
+##
+call_cleanup ()
+{ #
+#
+ ped_file=$famseq_dir/famseq_trio.ped
+ #touch $ped_file
+
+ rm -rf "$child_dir/logs"
+ rm -rf "$child_dir/models"
+ rm -rf "$child_dir/temp"
+ rm -rf "$father_dir/logs"
+ rm -rf "$father_dir/models"
+ rm -rf "$father_dir/temp"
+ rm -rf "$mother_dir/logs"
+ rm -rf "$mother_dir/models"
+ rm -rf "$mother_dir/temp"
+ rm -rf "$outdir/co_calling/temp"
+ rm -rf "$outdir/famseq/temp"
+#
+}
 #
 ###########################################################################################
 # MAIN
@@ -233,11 +255,12 @@ ref=''
 outdir=`pwd`
 Famseq_threshold='1.0'
 run_function='3'
+cleanup_file=true
 upload_to_bucket=false
 bucket=''
 
 # Handle parameters
-while getopts ':hi:r:o:t:b:f:' opt; do
+while getopts ':hni:r:o:t:b:f:' opt; do
   case "$opt" in 
     i)
 		input_file="$OPTARG" 
@@ -259,6 +282,7 @@ while getopts ':hi:r:o:t:b:f:' opt; do
         upload_to_bucket=true
         ;;
 
+    n) cleanup_file=false ;;
     h) usage ;;
     :) 
         usage 1 "-$OPTARG requires an argument" 
@@ -305,4 +329,9 @@ then #
 fi #
 #
 echo "$(date) - dv-trio completed"
+#
+if [ "$cleanup_file" = true ]; #
+then #
+	call_cleanup # cleanup all non required files
+fi
 
