@@ -335,5 +335,11 @@ then #
 	call_cleanup # cleanup all non required files
 fi
 #
+# Write to S3 bucket
+if [ upload_to_bucket = true ] ; then
+    echo "Writing Postprocessing output to S3 Bucket"
+    aws s3 cp "${outdir}" s3://${BUCKET_OUTPUT}/dv-trio/
+fi
+
 echo "$(date) - dv-trio completed"
 #
