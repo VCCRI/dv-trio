@@ -195,10 +195,8 @@ call_gatk_co_calling ()
 call_famseq ()
 { #
 #
- #touch $famseq_dir/famseq_trio.txt
 #build famseq ped file
  ped_file=$famseq_dir/famseq_trio.ped
- #touch $ped_file
 
  echo -e "ID\tmID\tfID\tgender\tIndividualName" > $ped_file
  echo -e "1\t3\t2\t${child[3]}\t${child[1]}" >> $ped_file
@@ -206,7 +204,6 @@ call_famseq ()
  echo -e "3\t0\t0\t2\t${mother[1]}" >> $ped_file
 #
 # build famseq input file
- #touch $famseq_dir/famseq_trio.txt
  echo -e "OUT\t$famseq_dir" > $famseq_dir/famseq_trio.txt
  echo -e "REF\t$ref" >> $famseq_dir/famseq_trio.txt
  echo -e "THOLD\t$Famseq_threshold" >> $famseq_dir/famseq_trio.txt
@@ -221,9 +218,8 @@ call_famseq ()
 call_cleanup ()
 { #
 #
- ped_file=$famseq_dir/famseq_trio.ped
- #touch $ped_file
-
+ echo "$(date) - cleanup work files"
+#
  rm -rf "$child_dir/logs"
  rm -rf "$child_dir/models"
  rm -rf "$child_dir/temp"
@@ -334,4 +330,6 @@ if [ "$cleanup_file" = true ]; #
 then #
 	call_cleanup # cleanup all non required files
 fi
-
+#
+echo "$(date) - dv-trio completed"
+#
