@@ -343,7 +343,7 @@ fi
 # Write to S3 bucket
 if [ "$upload_to_bucket" = true ]; #
 then #
-    echo "Writing Postprocessing output to S3 Bucket"
+    echo "$(date) - Writing Postprocessing output to S3 Bucket"
     aws s3 sync "${outdir}" s3://${bucket_output}/dv-trio_$datestamp/
 fi
 #
