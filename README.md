@@ -4,7 +4,7 @@
 dv-trio provides a pipeline to call variants for a trio (father-mother-child) using DeepVariants [1]. Genomic Variant Calling Files (gVCFs) created by DeepVariants are then co_called together using GATK[2]. The resultant trio VCF is then post-processing with FamSeq[3] to eliminate mendelian errors.
 
 ## Installation
-Clone this repository into your cloud instance and run the `install_dependencies.sh` script. This will install all dependencies onto your instance's PATH.
+Clone this repository into your cloud instance and run the `bash install_dependencies.sh` script. This will install all dependencies onto your instance's PATH.
 
 ## Usage
 ```
