@@ -22,7 +22,7 @@ Required arguments:
 
 Options:
   -o <output>     path to desired output directory (defaults to current directory)
-  -t <threshold>  likelihood ratio cutoff threshold (float b/w 0 and 1, default is 1.0)
+  -t <threshold>  likelihood ratio cutoff threshold for mendelian error correction (float between 0 [use single individual based method] and 1 [use pedigree information], default is 1.0)
   -b <bucket>     S3 bucket path to write output to
   -h              this help message
 ```
