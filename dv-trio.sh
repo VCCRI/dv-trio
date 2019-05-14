@@ -305,6 +305,9 @@ fi #
 #
 check_input # check the input file
 #
+datestamp=$(date "+%Y_%m_%d") #
+echo $datestamp
+#
 echo $outdir
 mkdir -p $outdir
 #
@@ -339,7 +342,7 @@ fi
 if [ "$upload_to_bucket" = true ]; #
 then #
     echo "Writing Postprocessing output to S3 Bucket"
-    aws s3 sync "${outdir}" s3://${bucket_output}/dv-trio/
+    aws s3 sync "${outdir}" s3://${bucket_output}/dv-trio_$datestamp/
 fi
 #
 echo "$(date) - dv-trio completed"
