@@ -1,0 +1,4 @@
+#Sample	Sample_ID	Sample_bam_location	Sample_gender
+CHILD	3967	/home/ubuntu/demo_bams/3967.1m.sorted.bam	1
+FATHER	3968	/home/ubuntu/demo_bams/3968.1m.sorted.bam	1
+MOTHER	3969	/home/ubuntu/demo_bams/3969.1m.sorted.bam	2

@@ -6,6 +6,22 @@
 # exec -l $SHELL
 
 mkdir -p lib
+#
+sudo snap install aws-cli --classic
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install build-essential -y
+#sudo apt install gcc
+sudo apt install zlib1g-dev -y
+
+sudo apt-get install libbz2-dev -y
+sudo apt-get install liblzma-dev -y
+#sudo apt install make
+sudo apt-get install autoconf -y
+sudo apt install pkg-config -y
+sudo apt-get install libcurl4 libcurl4-openssl-dev -y
+sudo apt-get install libssl-dev -y
+sudo apt-get -y install docker.io
 
 # htslib
 wget https://github.com/samtools/htslib/releases/download/1.9/htslib-1.9.tar.bz2 -O htslib.tar.bz2
@@ -16,14 +32,16 @@ sudo make install
 cd ..
 
 # samtools
-wget https://github.com/samtools/samtools/releases/download/1.8/samtools-1.8.tar.bz2 -O samtools.tar.bz2
-tar -xjvf samtools.tar.bz2
-cd samtools-1.8
-./configure --without-curses
-make
-sudo make prefix=/usr/local/bin install
-sudo ln -s /usr/local/bin/bin/samtoos /usr/bin/samtools
-cd ..
+sudo apt-get -y install samtools
+#wget https://github.com/samtools/samtools/releases/download/1.8/samtools-1.8.tar.bz2 -O samtools.tar.bz2
+#tar -xjvf samtools.tar.bz2
+#cd samtools-1.8
+#./configure --without-curses
+#make
+#sudo make prefix=/usr/local/bin install
+#sudo ln -s /usr/local/bin/bin/samtools /usr/bin/samtools
+#cd ..
+samtools help
 
 # bcftools
 wget https://github.com/samtools/bcftools/releases/download/1.9/bcftools-1.9.tar.bz2 -O bcftools.tar.bz2
@@ -33,6 +51,7 @@ make
 sudo make prefix=/usr/local/bin install
 sudo ln -s /usr/local/bin/bin/bcftools /usr/bin/bcftools
 cd ..
+bcftools help
 
 # vcf-tools
 git clone https://github.com/vcftools/vcftools.git
@@ -44,6 +63,7 @@ sudo make install
 export PERL5LIB=`pwd`/src/perl/
 # sudo ln -s `pwd`/src/perl/vcf-merge /usr/bin/vcf-merge
 cd ..
+vcftools --version
 
 # vt
 git clone https://github.com/atks/vt.git  
@@ -52,6 +72,7 @@ make
 make test
 sudo ln -s `pwd`/vt /usr/bin/vt
 cd ..
+vt help
 
 # parallel
 sudo apt-get -y update
@@ -66,6 +87,23 @@ cd FamSeq/src/
 make 
 sudo ln -s `pwd`/FamSeq /usr/bin/FamSeq
 cd ../..
+FamSeq -h
+#
+sudo apt install python2.7 python-pip -y
+# python version
+python --version
 
-
-
+##aws s3 cp s3://vccri-giannoulatou-lab-clihad-deepvariant/gsutil.tar.gz .
+wget https://storage.googleapis.com/pub/gsutil.tar.gz
+tar xfz gsutil.tar.gz -C $HOME
+#sudo ln -s $HOME/gsutil /usr/bin/gsutil
+#export PATH=${PATH}:$HOME/gsutil
+#echo $PATH
+#
+#java
+sudo apt-get -y install openjdk-8-jre-headless
+#
+#GATK
+wget https://github.com/broadinstitute/gatk/releases/download/4.1.2.0/gatk-4.1.2.0.zip
+sudo apt-get -y install unzip
+unzip gatk-4.1.2.0.zip
