@@ -274,7 +274,7 @@ while getopts ':hni:r:o:t:b:f:' opt; do
         ;;
     t) Famseq_threshold="$OPTARG" ;;
     b)
-        bucket="$OPTARG"
+        bucket_output="$OPTARG"
         upload_to_bucket=true
         ;;
 
@@ -339,7 +339,7 @@ fi
 if [ "$upload_to_bucket" = true ]; #
 then #
     echo "Writing Postprocessing output to S3 Bucket"
-    aws s3 cp "${outdir}" s3://${BUCKET_OUTPUT}/dv-trio/
+    aws s3 cp "${outdir}" s3://${bucket_output}/dv-trio/
 fi
 #
 echo "$(date) - dv-trio completed"
