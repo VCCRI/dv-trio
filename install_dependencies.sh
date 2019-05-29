@@ -8,11 +8,10 @@
 mkdir -p lib
 #
 sudo snap install aws-cli --classic
-sudo apt update -y
-sudo rm /boot/grub/menu.lst
-sudo update-grub-legacy-ec2 -y
-sudo apt-get dist-upgrade -qq --force-yes
-#sudo apt update -y
+sudo apt-get update -y
+#sudo rm /boot/grub/menu.lst
+#sudo update-grub-legacy-ec2 -y
+#sudo apt-get dist-upgrade -qq --force-yes
 #sudo apt upgrade -y
 sudo apt install build-essential -y
 #sudo apt install gcc
