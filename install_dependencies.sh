@@ -8,8 +8,11 @@
 mkdir -p lib
 #
 sudo snap install aws-cli --classic
-sudo apt update -y
-sudo apt upgrade -y
+sudo rm /boot/grub/menu.lst
+sudo update-grub-legacy-ec2 -y
+sudo apt-get dist-upgrade -qq --force-yes
+#sudo apt update -y
+#sudo apt upgrade -y
 sudo apt install build-essential -y
 #sudo apt install gcc
 sudo apt install zlib1g-dev -y
@@ -33,14 +36,6 @@ cd ..
 
 # samtools
 sudo apt-get -y install samtools
-#wget https://github.com/samtools/samtools/releases/download/1.8/samtools-1.8.tar.bz2 -O samtools.tar.bz2
-#tar -xjvf samtools.tar.bz2
-#cd samtools-1.8
-#./configure --without-curses
-#make
-#sudo make prefix=/usr/local/bin install
-#sudo ln -s /usr/local/bin/bin/samtools /usr/bin/samtools
-#cd ..
 samtools help
 
 # bcftools
@@ -75,10 +70,8 @@ cd ..
 vt help
 
 # parallel
-sudo apt-get -y update
+#sudo apt-get -y update
 sudo apt-get -y install parallel
-# sudo apt-get -y install samtools
-# sudo apt-get -y install docker.io
 
 # FamSeq
 wget http://bioinformatics.mdanderson.org/Software/FamSeq/FamSeq1.0.3.tar.gz -O FamSeq.tar.gz
