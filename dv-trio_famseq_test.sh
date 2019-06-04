@@ -15,7 +15,7 @@ FAMSEQ_MOD_TEMPSPLIT="$TEMP_DIR/$FAMSEQ_MOD_TEMPSPLIT_pref"
 bcftools view -h $FAMSEQ_OUTPUT > $FAMSEQ_MOD_TEMPVCF # firstly change the header
 sed -i 's|ID=GT\,|ID=OGT\,|g' $FAMSEQ_MOD_TEMPVCF #
 sed -i 's|ID=FGT\,|ID=GT\,|g' $FAMSEQ_MOD_TEMPVCF #
-numb_col=$(tail -n1 $FAMSEQ_MOD_OUTPUT | wc -w)
+numb_col=$(tail -n1 $FAMSEQ_MOD_TEMPVCF | wc -w)
 nsamp=$(($nbr_col-9))
 #
 FAMSEQ_MOD_TEMPO1="$TEMP_DIR/vcf_famseq_mod_temp.txt"
