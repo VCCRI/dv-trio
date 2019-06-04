@@ -39,11 +39,14 @@ for i in {1..18} # check for 3 hrs max
 do 
  find $TEMP_DIR -name $FAMSEQ_MOD_TEMPSPLIT_pref"*.done" > $FAMSEQ_MOD_TEMPO3 
  nfile=$(wc -l $FAMSEQ_MOD_TEMPO3)
+ echo $nfile":"$sfile
  if [[ $nfile = $sfile ]];
  then
+	echo "equal"
 	famseq_complete=true
 	break
  else
+	echo "not equal"
 	sleep 10m #
  fi
 done
