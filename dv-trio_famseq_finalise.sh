@@ -59,6 +59,6 @@ do #
  echo -e $base$format_redo$tab$sample1_redo$tab$sample2_redo$tab$sample3_redo | sed -e 's/:GT:/:OGT:/g' -e 's/FGT:/GT:/g' >> $output # put new variant line with the GT and FGt reordered
 done < $input # 
 #
-echo -e "OUT\t$input" > $input"_done.txt" 
+echo -e "OUT\t$input" > $input".done" 
 
 #
