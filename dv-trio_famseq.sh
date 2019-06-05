@@ -71,24 +71,26 @@ nsamp=$(($nbr_col-9))
 FAMSEQ_MOD_TEMPO1="$TEMP_DIR/vcf_famseq_mod_temp.txt"
 FAMSEQ_MOD_TEMPO2="$TEMP_DIR/vcf_famseq_mod_split_list1.txt"
 FAMSEQ_MOD_TEMPO3="$TEMP_DIR/vcf_famseq_mod_split_list2.txt"
+FAMSEQ_MOD_TEMPVCF="$TEMP_DIR/vcf_famseq_mod_temp.vcf"
 FAMSEQ_MOD_TEMPSPLIT_pref="vcf_famseq_mod_splittemp_"
 FAMSEQ_MOD_TEMPSPLIT="$TEMP_DIR/$FAMSEQ_MOD_TEMPSPLIT_pref"
 bcftools view -H $FAMSEQ_OUTPUT | grep "FGT" > $FAMSEQ_MOD_TEMPO1
-bcftools view -H $FAMSEQ_OUTPUT | grep -v "FGT" >> $FAMSEQ_MOD_OUTPUT # put all the variants that were not changed by FamSeq to new output VCF - sort it later
+bcftools view -H $FAMSEQ_OUTPUT | grep -v "FGT" >> $FAMSEQ_MOD_TEMPVCF # put all the variants that were not changed by FamSeq to new output VCF - sort it later
 split -n 23 -d $FAMSEQ_MOD_TEMPO1 $FAMSEQ_MOD_TEMPSPLIT  # split up the variants that were change by FamSeq
 find $TEMP_DIR -name $FAMSEQ_MOD_TEMPSPLIT_pref"*" > $FAMSEQ_MOD_TEMPO2 #
-sfile=$(wc -l $FAMSEQ_MOD_TEMPO2) # get number of splits
+sfile=$(cat $FAMSEQ_MOD_TEMPO2 | wc -l) # get number of splits
 #
 while read line;     # do while there are lines from input file
 do #
 	bash dv-trio_famseq_finalise.sh $line &
 done < $FAMSEQ_MOD_TEMPO2  #
 #
-for i in {1..30} # check for 5 hrs max
+famseq_complete=false
+for i in {1..18} # check for 3 hrs max
 do 
- find $TEMP_DIR -name $FAMSEQ_MOD_TEMPSPLIT_pref"*_done.txt" > $FAMSEQ_MOD_TEMPO3 
- nfile=$(wc -l $FAMSEQ_MOD_TEMPO3)
- if [ "$nfile" == "$sfile" ];
+ find $TEMP_DIR -name $FAMSEQ_MOD_TEMPSPLIT_pref"*.done" > $FAMSEQ_MOD_TEMPO3 
+ nfile=$(cat $FAMSEQ_MOD_TEMPO3 | wc -l)
+ if [[ $nfile = $sfile ]];
  then
 	famseq_complete=true
 	break
@@ -96,13 +98,20 @@ do
 	sleep 10m #
  fi
 done
+# check if conversion completed
+if [ "$famseq_complete" = true ]; #
+ then #
+	find $TEMP_DIR -name $FAMSEQ_MOD_TEMPSPLIT_pref"*.txt" > $FAMSEQ_MOD_TEMPO3 
+	while read line;     # do while there are lines from input file
+	do #
+		cat $line >> $FAMSEQ_MOD_TEMPVCF #
+	done < $FAMSEQ_MOD_TEMPO3  #
 #
-while read line;     # do while there are lines from input file
-do #
-	cat $line >> $FAMSEQ_MOD_OUTPUT #
-done < $FAMSEQ_MOD_TEMPO3  #
-#
+	bcftools sort -o $FAMSEQ_MOD_OUTPUT -O v -T $TEMP_DIR $FAMSEQ_MOD_TEMPVCF #
 ##################
-echo -e "OUT\t$FAMSEQ_OUTPUT" > $FAMSEQ_DIR/famseq_done.txt
-echo "$(date) - FamSeq completed"
-
+	echo -e "OUT\t$FAMSEQ_OUTPUT" > $FAMSEQ_DIR/famseq_done.txt
+	echo "$(date) - FamSeq completed"
+ else #
+	echo "$(date) - FamSeq not completed"
+fi #
+#

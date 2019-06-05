@@ -54,11 +54,10 @@ done
 find $TEMP_DIR -name $FAMSEQ_MOD_TEMPSPLIT_pref"*.txt" > $FAMSEQ_MOD_TEMPO3 
 while read line;     # do while there are lines from input file
 do #
-	cat $line >> $FAMSEQ_MOD_OUTPUT #
+	cat $line >> $FAMSEQ_MOD_TEMPVCF #
 done < $FAMSEQ_MOD_TEMPO3  #
 #
-bcftools sort -o $FAMSEQ_MOD_OUTPUT -O V -T $TEMP_DIR #
+bcftools sort -o $FAMSEQ_MOD_OUTPUT -O v -T $TEMP_DIR $FAMSEQ_MOD_TEMPVCF #
 ##################
-echo -e "OUT\t$FAMSEQ_OUTPUT" > $FAMSEQ_DIR/famseq_done.txt
 echo "$(date) - FamSeq completed"
 
