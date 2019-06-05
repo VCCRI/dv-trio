@@ -26,7 +26,7 @@ FAMSEQ_MOD_TEMPSPLIT_pref="vcf_famseq_mod_splittemp_"
 FAMSEQ_MOD_TEMPSPLIT="$TEMP_DIR/$FAMSEQ_MOD_TEMPSPLIT_pref"
 bcftools view -H $FAMSEQ_OUTPUT | grep "FGT" > $FAMSEQ_MOD_TEMPO1
 bcftools view -H $FAMSEQ_OUTPUT | grep -v "FGT" >> $FAMSEQ_MOD_TEMPVCF # put all the variants that were not changed by FamSeq to new output VCF - sort it later
-split -n 23 -d $FAMSEQ_MOD_TEMPO1 $FAMSEQ_MOD_TEMPSPLIT  # split up the variants that were change by FamSeq
+split -n l/23 -d $FAMSEQ_MOD_TEMPO1 $FAMSEQ_MOD_TEMPSPLIT  # split up the variants that were change by FamSeq
 find $TEMP_DIR -name $FAMSEQ_MOD_TEMPSPLIT_pref"*" > $FAMSEQ_MOD_TEMPO2 #
 sfile=$(cat $FAMSEQ_MOD_TEMPO2 | wc -l) # get number of splits
 #
