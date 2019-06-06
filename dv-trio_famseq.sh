@@ -1,5 +1,5 @@
 #!/bin/bash
-# dv-trio.sh
+# dv-trio_famseq.sh
 input=$1 #
 # Initialise variables
 input_vcf=''
