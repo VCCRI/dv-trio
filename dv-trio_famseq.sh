@@ -1,5 +1,5 @@
 #!/bin/bash
-# dv-trio_famseq.sh
+# dv-trio.sh
 input=$1 #
 # Initialise variables
 input_vcf=''
@@ -72,8 +72,6 @@ sed -i 's|PP\,Number\=G\,Type\=Integer|PP\,Number\=G\,Type\=Float|g' $FAMSEQ_OUT
 bcftools view -h $FAMSEQ_OUTPUT > $FAMSEQ_MOD_TEMPVCF # firstly change the header
 sed -i 's|ID=GT\,|ID=OGT\,|g' $FAMSEQ_MOD_TEMPVCF #
 sed -i 's|ID=FGT\,|ID=GT\,|g' $FAMSEQ_MOD_TEMPVCF #
-numb_col=$(tail -n1 $FAMSEQ_MOD_OUTPUT | wc -w)
-nsamp=$(($nbr_col-9))
 #
 bcftools view -H $FAMSEQ_OUTPUT | grep "FGT" > $FAMSEQ_MOD_TEMPO1
 bcftools view -H $FAMSEQ_OUTPUT | grep -v "FGT" >> $FAMSEQ_MOD_TEMPVCF # put all the variants that were not changed by FamSeq to new output VCF - sort it later
