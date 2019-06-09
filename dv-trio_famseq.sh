@@ -68,6 +68,21 @@ FamSeq vcf -vcfFile $TEMP_DIR/famseq_input.dec.bs.processed.corr.vcf -pedFile $p
 sed -i 's/[ \t]*$//' $FAMSEQ_OUTPUT #
 sed -i 's|PP\,Number\=G\,Type\=Integer|PP\,Number\=G\,Type\=Float|g' $FAMSEQ_OUTPUT #
 #
+#save original GT value and move Famseq GT to be the GT value for sample
+bcftools view -h $FAMSEQ_OUTPUT > $FAMSEQ_MOD_TEMPVCF # firstly change the header
+sed -i 's|ID=GT\,|ID=OGT\,|g' $FAMSEQ_MOD_TEMPVCF #
+sed -i 's|ID=FGT\,|ID=GT\,|g' $FAMSEQ_MOD_TEMPVCF #
+#
+bcftools view -H $FAMSEQ_OUTPUT | grep "FGT" > $FAMSEQ_MOD_TEMPO1
+bcftools view -H $FAMSEQ_OUTPUT | grep -v "FGT" >> $FAMSEQ_MOD_TEMPVCF # put all the variants that were not changed by FamSeq to new output VCF - sort it later
+split -n l/23 -d $FAMSEQ_MOD_TEMPO1 $FAMSEQ_MOD_TEMPSPLIT  # split up the variants that were change by FamSeq
+find $TEMP_DIR -name $FAMSEQ_MOD_TEMPSPLIT_pref"*" > $FAMSEQ_MOD_TEMPO2 #
+sfile=$(cat $FAMSEQ_MOD_TEMPO2 | wc -l) # get number of splits
+#
+while read line;     # do while there are lines from input file
+do #
+	bash dv-trio_famseq_finalise.sh $line &
+done < $FAMSEQ_MOD_TEMPO2  #
 ##################
 echo -e "OUT\t$FAMSEQ_OUTPUT" > $FAMSEQ_DIR/famseq_done.txt
 echo "$(date) - FamSeq completed"
