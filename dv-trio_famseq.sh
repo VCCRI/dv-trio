@@ -83,6 +83,36 @@ while read line;     # do while there are lines from input file
 do #
 	bash dv-trio_famseq_finalise.sh $line &
 done < $FAMSEQ_MOD_TEMPO2  #
+#
+famseq_complete=false
+for i in {1..18} # check for 3 hrs max
+do 
+ find $TEMP_DIR -name $FAMSEQ_MOD_TEMPSPLIT_pref"*.done" > $FAMSEQ_MOD_TEMPO3 
+ nfile=$(cat $FAMSEQ_MOD_TEMPO3 | wc -l)
+ if [[ $nfile = $sfile ]];
+ then
+	famseq_complete=true
+	echo "$(date) - FamSeq GT switch completed"
+	break
+ else
+	sleep 10m #
+	echo "$(date) - FamSeq GT switch not completed"
+ fi
+done
+# check if conversion completed
+if [ "$famseq_complete" = true ]; #
+ then #
+	find $TEMP_DIR -name $FAMSEQ_MOD_TEMPSPLIT_pref"*.txt" > $FAMSEQ_MOD_TEMPO3 
+	while read line;     # do while there are lines from input file
+	do #
+		cat $line >> $FAMSEQ_MOD_TEMPVCF #
+	done < $FAMSEQ_MOD_TEMPO3  #
+#
+	bcftools sort -o $FAMSEQ_MOD_OUTPUT -O v -T $TEMP_DIR $FAMSEQ_MOD_TEMPVCF #
 ##################
-echo -e "OUT\t$FAMSEQ_OUTPUT" > $FAMSEQ_DIR/famseq_done.txt
-echo "$(date) - FamSeq completed"
+	echo -e "OUT\t$FAMSEQ_OUTPUT" > $FAMSEQ_DIR/famseq_done.txt
+	echo "$(date) - FamSeq completed"
+ else #
+	echo "$(date) - FamSeq not completed"
+fi #
+#
