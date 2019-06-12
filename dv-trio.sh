@@ -335,6 +335,8 @@ then #
 	call_famseq # do FamSeq call for mendelian error correction for trio VCF
 fi #
 #
+cp "$outdir/famseq/trio.FamSeq_mod.vcf" "$outdir/dv-trio_final_output.vcf"
+
 if [ "$cleanup_file" = true ]; #
 then #
 	call_cleanup # cleanup all non required files
