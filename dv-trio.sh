@@ -214,6 +214,25 @@ call_famseq ()
  bash dv-trio_famseq.sh $famseq_dir/famseq_trio.txt #
 }
 ########################################################################################################
+# FUNCTION FINAL_OUTPUT: create final output VCF
+##
+call_final_ouput ()
+{ #
+#
+ echo "$(date) - create final output"
+#
+ cp "$outdir/famseq/trio.FamSeq_mod.vcf" "$outdir/dv-trio_final_output.vcf"
+ gatk-4.1.2.0/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$PBS_JOBFS" SelectVariants \
+-V "$outdir/famseq/trio.FamSeq_mod.vcf" \
+-sn ${child[1]} \
+-sn ${father[1]} \
+-sn ${mother[1]} \
+-remove-unused-alternates TRUE \
+-exclude-non-variants TRUE \
+-O "$outdir/dv-trio_final_output.vcf"
+#
+}
+########################################################################################################
 # FUNCTION CLEANUP: cleanup all the temp files
 ##
 call_cleanup ()
@@ -335,8 +354,13 @@ then #
 	call_famseq # do FamSeq call for mendelian error correction for trio VCF
 fi #
 #
-cp "$outdir/famseq/trio.FamSeq_mod.vcf" "$outdir/dv-trio_final_output.vcf"
-
+if [ -f $famseq/"famseq_done.txt" ]; # check if famseq was completed
+then # yes 
+	call_final_ouput # cleanup all non required files
+else
+	echo "$(date) - No final output from dv-trio - Error in processing"
+fi
+#
 if [ "$cleanup_file" = true ]; #
 then #
 	call_cleanup # cleanup all non required files
