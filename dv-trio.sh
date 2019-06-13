@@ -331,31 +331,36 @@ echo $datestamp
 #
 echo $outdir
 mkdir -p $outdir
+child_dir="$outdir/deepvariant/${child[1]}"
+father_dir="$outdir/deepvariant/${father[1]}"
+mother_dir="$outdir/deepvariant/${mother[1]}"
+co_call_dir="$outdir/co_calling"
+famseq_dir="$outdir/famseq"
 #
 if [ "$run_function" -gt "0" ]; #
 then #
-	child_dir="$outdir/deepvariant/${child[1]}"
-	father_dir="$outdir/deepvariant/${father[1]}"
-	mother_dir="$outdir/deepvariant/${mother[1]}"
+#	child_dir="$outdir/deepvariant/${child[1]}"
+#	father_dir="$outdir/deepvariant/${father[1]}"
+#	mother_dir="$outdir/deepvariant/${mother[1]}"
 	call_deepvariant # do deepvariant variant calling on the trio samples
 fi
 #
 if [ "$run_function" -gt "1" ]; #
 then #
-	co_call_dir="$outdir/co_calling"
+#	co_call_dir="$outdir/co_calling"
 	mkdir -p $co_call_dir
 	call_gatk_co_calling # do GATK call for co_calling of trio from gVCFs
 fi
 #
 if [ "$run_function" -gt "2" ]; #
 then #
-	famseq_dir="$outdir/famseq"
+#	famseq_dir="$outdir/famseq"
 	mkdir -p $famseq_dir
 	call_famseq # do FamSeq call for mendelian error correction for trio VCF
 fi #
 #
 echo $famseq_dir"/famseq_done.txt" # check if famseq was completed
-if [ -f $famseq_dir"/famseq_done.txt" ]; # check if famseq was completed
+if [ -f $famseq_dir/famseq_done.txt ]; # check if famseq was completed
 then # yes 
 	call_final_ouput # cleanup all non required files
 else
