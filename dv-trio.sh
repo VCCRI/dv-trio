@@ -354,7 +354,7 @@ then #
 	call_famseq # do FamSeq call for mendelian error correction for trio VCF
 fi #
 #
-if [ -f $famseq/"famseq_done.txt" ]; # check if famseq was completed
+if [ -f $famseq_dir"/famseq_done.txt" ]; # check if famseq was completed
 then # yes 
 	call_final_ouput # cleanup all non required files
 else
