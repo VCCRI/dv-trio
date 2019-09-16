@@ -72,7 +72,7 @@ NA12892 (mother) - ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/ill
 
 ### Benchmarking Softwares :
 
-Mendel Error Rate : akt - ancestry and kinship toolkit ([https://github.com/Illumina/akt](https://github.com/Illumina/akt))  
+Mendel Error Rate : akt - ancestry and kinship toolkit (v0.2.0) ([https://github.com/Illumina/akt](https://github.com/Illumina/akt))  
 F1 score, recall and precision :  Haplotype Comparsion Tools ([https://github.com/Illumina/hap.py](https://github.com/Illumina/hap.py))  
 
 ## References 
