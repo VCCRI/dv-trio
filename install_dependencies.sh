@@ -45,6 +45,7 @@ cd bcftools-1.9
 make
 sudo make prefix=/usr/local/bin install
 sudo ln -s /usr/local/bin/bin/bcftools /usr/bin/bcftools
+export BCFTOOLS_PLUGINS=`pwd`/plugins/
 cd ..
 bcftools help
 
