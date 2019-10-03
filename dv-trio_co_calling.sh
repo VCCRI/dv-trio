@@ -75,7 +75,7 @@ tabix -p vcf $mother_gvcf #
 merge_gvcf="${TEMP_DIR}/merge_gvcf.g.vcf.gz"
 #
 #gatk-4.1.2.0/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$TEMP_DIR" CombineGVCFs
-gatk-4.1.3.0/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$TEMP_DIR" CombineGVCFs \
+gatk/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$TEMP_DIR" CombineGVCFs \
 -R $ref \
 --variant $child_gvcf \
 --variant $father_gvcf \
@@ -89,7 +89,7 @@ tabix -p vcf $merge_gvcf
 co_called_vcf="${COCALL_DIR}/trio_co_called.vcf.gz"
 #
 #gatk-4.1.2.0/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$PBS_JOBFS" GenotypeGVCFs 
-gatk-4.1.3.0/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$PBS_JOBFS" GenotypeGVCFs \
+gatk/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$PBS_JOBFS" GenotypeGVCFs \
 -R $ref \
 -V $merge_gvcf \
 -O $co_called_vcf
