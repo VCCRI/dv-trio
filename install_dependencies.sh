@@ -98,6 +98,8 @@ tar xfz gsutil.tar.gz -C $HOME
 sudo apt-get -y install openjdk-8-jre-headless
 #
 #GATK
-wget https://github.com/broadinstitute/gatk/releases/download/4.1.2.0/gatk-4.1.2.0.zip
+#wget https://github.com/broadinstitute/gatk/releases/download/4.1.2.0/gatk-4.1.2.0.zip
+wget https://github.com/broadinstitute/gatk/releases/download/4.1.3.0/gatk-4.1.3.0.zip
 sudo apt-get -y install unzip
-unzip gatk-4.1.2.0.zip
+#unzip gatk-4.1.2.0.zip
+unzip gatk-4.1.3.0.zip
