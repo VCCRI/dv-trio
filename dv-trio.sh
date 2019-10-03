@@ -222,14 +222,15 @@ call_final_ouput ()
  echo "$(date) - create final output"
 #
  cp "$outdir/famseq/trio.FamSeq_mod.vcf" "$outdir/dv-trio_final_output.vcf"
- gatk-4.1.2.0/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$PBS_JOBFS" SelectVariants \
--V "$outdir/famseq/trio.FamSeq_mod.vcf" \
--sn ${child[1]} \
--sn ${father[1]} \
--sn ${mother[1]} \
--remove-unused-alternates TRUE \
--exclude-non-variants TRUE \
--O "$outdir/dv-trio_final_output.vcf"
+ #gatk-4.1.2.0/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$PBS_JOBFS" SelectVariants
+ gatk/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$PBS_JOBFS" SelectVariants \
+ -V "$outdir/famseq/trio.FamSeq_mod.vcf" \
+ -sn ${child[1]} \
+ -sn ${father[1]} \
+ -sn ${mother[1]} \
+ -remove-unused-alternates TRUE \
+ -exclude-non-variants TRUE \
+ -O "$outdir/dv-trio_final_output.vcf"
 #
 }
 ########################################################################################################
