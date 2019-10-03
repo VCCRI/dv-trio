@@ -103,3 +103,4 @@ wget https://github.com/broadinstitute/gatk/releases/download/4.1.3.0/gatk-4.1.3
 sudo apt-get -y install unzip
 #unzip gatk-4.1.2.0.zip
 unzip gatk-4.1.3.0.zip
+mv gatk-4.1.3.0 gatk
