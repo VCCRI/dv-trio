@@ -45,9 +45,9 @@ zcat $input_vcf > "${TEMP_DIR}/famseq_input.vcf"
 #
 echo "Decomposing and normalising samples..."
 # Decompose and normalise all vcfs
-#vt decompose -s $TEMP_DIR/famseq_input.vcf -o $TEMP_DIR/famseq_input.dec.vcf 
-vt normalize $TEMP_DIR/famseq_input.vcf -r $ref | vt uniq - -o $TEMP_DIR/famseq_input.norm.vcf
-vt decompose -s $TEMP_DIR/famseq_input.norm.vcf -o $TEMP_DIR/famseq_input.dec.vcf 
+vt decompose -s $TEMP_DIR/famseq_input.vcf -o $TEMP_DIR/famseq_input.dec.vcf 
+#vt normalize $TEMP_DIR/famseq_input.vcf -r $ref | vt uniq - -o $TEMP_DIR/famseq_input.norm.vcf
+#vt decompose -s $TEMP_DIR/famseq_input.norm.vcf -o $TEMP_DIR/famseq_input.dec.vcf 
 vt decompose_blocksub -a $TEMP_DIR/famseq_input.dec.vcf -o $TEMP_DIR/famseq_input.dec.bs.vcf
 vt normalize $TEMP_DIR/famseq_input.dec.bs.vcf -r $ref | vt uniq - -o $TEMP_DIR/famseq_input.dec.bs.processed.vcf
 #bgzip $TEMP_DIR/famseq_input.dec.bs.processed.vcf
