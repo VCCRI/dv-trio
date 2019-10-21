@@ -85,8 +85,8 @@ eg for HG002, it would located at deepvariant/HG002/output/HG002.output.vcf.gz
 #
 Mendel Error Rate : akt - ancestry and kinship toolkit (v0.2.0) ([https://github.com/Illumina/akt](https://github.com/Illumina/akt))  
 #
-bcftools convert -o GIAB.bcf -O b GIAB_dv-trio.vcf.gz
-akt mendel GIAB.bcf -p GIAB.ped > GIAB_mendel.txt
+bcftools convert -o GIAB.bcf -O b GIAB_dv-trio.vcf.gz  
+akt mendel GIAB.bcf -p GIAB.ped > GIAB_mendel.txt  
 
 ## Preform precision, Recall and F1-score calculation using hap.py 
 #
