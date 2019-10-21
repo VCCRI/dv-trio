@@ -1,14 +1,6 @@
 
 # dv-trio - testing outline from application note
 
-## Cloud instance recommendation
-We were able to successfully run dv-trio for a WGS trio under the following machine condition.
-
-Samples : Genome in a Bottle Consortium's AshkenazimTrio - HG002/HG003/HG004  
-Virtual Machine :  **AWS** - Ubuntu Server 18.04 LTS (HVM), SSD Volume Type - 64-bit (x86)  
-Instance Type : Compute Optimized - C5.9xlarge - 36 vCPUs, 72GB Memory  
-Instance Storage : 1000GB (at least two times the size of the bam files size)   
-
 ### Test Data :
 
 ### GIAB Ashkenazim Trio data files - 
