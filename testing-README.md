@@ -28,7 +28,9 @@ GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna
 GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.fai
 
 **Pedigree :**
-Family	Subject	Father	Mother	Sex	Phenotype 
+Family Subject Father Mother Sex Phenotype
+
+
 GIAB	HG002	HG003	HG004	1	1
 GIAB	HG003	0		0		1	1
 GIAB	HG004	0		0		2	1
