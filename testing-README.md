@@ -43,11 +43,11 @@ NA12892 (mother) - ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/ill
 GRCh38_full_analysis_set_plus_decoy_hla.fa
 GRCh38_full_analysis_set_plus_decoy_hla.fa.fai
 
-**Pedigree :**
-Family	Subject	Father	Mother	Sex	Phenotype 
-NA12878	NA12878	NA12891	NA12892	2	2 
-NA12878	NA12891	0		0		1	1 
-NA12878	NA12892	0		0		2	1 
+**Pedigree :**  
+Family Subject Father Mother Sex Phenotype   
+NA12878	NA12878	NA12891	NA12892	2	2   
+NA12878	NA12891	0		0		1	1   
+NA12878	NA12892	0		0		2	1   
 
 ### 1000 Genomes Project CEPH Trio exome data files - 
 **BAMs :**  
