@@ -29,9 +29,9 @@ GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.fai
 
 ** Pedigree :**
 Family	Subject	Father	Mother	Sex	Phenotype 
-GIAB	HG002	HG003	HG004	1	1 
-GIAB	HG003	0		0		1	1 
-GIAB	HG004	0		0		2	1 
+GIAB	HG002	HG003	HG004	1	1
+GIAB	HG003	0		0		1	1
+GIAB	HG004	0		0		2	1
 ### 1000 Genomes Project CEPH Trio genome data files - 
 **CRAMs :**  
 NA12878 (proband - daughter) - ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/illumina_platinum_pedigree/data/CEU/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150706.CEU.illumina_platinum_ped.cram  
