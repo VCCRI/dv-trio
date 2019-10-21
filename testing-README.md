@@ -24,16 +24,14 @@ HG003 (father) - ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/AshkenazimTri
 HG004 (mother) - ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/AshkenazimTrio/HG004_NA24143_mother/latest/GRCh38/  
 
 **Reference :**  
-GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna
-GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.fai
+GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna  
+GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.fai  
 
-**Pedigree :**
-Family Subject Father Mother Sex Phenotype
-
-
-GIAB	HG002	HG003	HG004	1	1
-GIAB	HG003	0		0		1	1
-GIAB	HG004	0		0		2	1
+**Pedigree :**   
+Family Subject Father Mother Sex Phenotype  
+GIAB	HG002	HG003	HG004	1	1  
+GIAB	HG003	0		0		1	1  
+GIAB	HG004	0		0		2	1  
 
 ### 1000 Genomes Project CEPH Trio genome data files - 
 **CRAMs :**  
