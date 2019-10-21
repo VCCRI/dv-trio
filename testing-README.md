@@ -44,10 +44,10 @@ GRCh38_full_analysis_set_plus_decoy_hla.fa
 GRCh38_full_analysis_set_plus_decoy_hla.fa.fai
 
 **Pedigree :**
-Family	Subject	Father	Mother	Sex	Phenotype
-NA12878	NA12878	NA12891	NA12892	2	2
-NA12878	NA12891	0		0		1	1
-NA12878	NA12892	0		0		2	1
+Family	Subject	Father	Mother	Sex	Phenotype 
+NA12878	NA12878	NA12891	NA12892	2	2 
+NA12878	NA12891	0		0		1	1 
+NA12878	NA12892	0		0		2	1 
 
 ### 1000 Genomes Project CEPH Trio exome data files - 
 **BAMs :**  
@@ -59,7 +59,7 @@ NA12892 (mother) - ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/workin
 ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/working/20120117_ceu_trio_b37_decoy/CEUTrio.HiSeq.WEx.b37_decoy.NA12892.clean.dedup.recal.20120117.bam.bai
 
 **Reference :**  
-human_g1k_v37_decoy.fasta
+human_g1k_v37_decoy.fasta 
 human_g1k_v37_decoy.fasta.fai
 
 
