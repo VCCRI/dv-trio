@@ -32,8 +32,8 @@ NA12891 (father) - ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/ill
 NA12892 (mother) - ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/illumina_platinum_pedigree/data/CEU/NA12892/alignment/NA12892.alt_bwamem_GRCh38DH.20150706.CEU.illumina_platinum_ped.cram  
 
 **Reference :**  
-GRCh38_full_analysis_set_plus_decoy_hla.fa
-GRCh38_full_analysis_set_plus_decoy_hla.fa.fai
+GRCh38_full_analysis_set_plus_decoy_hla.fa  
+GRCh38_full_analysis_set_plus_decoy_hla.fa.fai  
 
 **Pedigree :**  
 Family Subject Father Mother Sex Phenotype   
