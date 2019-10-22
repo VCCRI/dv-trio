@@ -57,7 +57,9 @@ ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/b37/human_g1k_v37_decoy.
 
 ## Create dv-trio trio - using GIAB AKT trio 
 #
-bash dv-trio.sh -i GIAB_trio_file.txt -r /home/ubuntu/ref/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna -o GIAB_output 
+bash dv-trio.sh -i GIAB_trio_file.txt \  
+-r /home/ubuntu/ref/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna \  
+-o GIAB_output  
 
 ## Create dv-trio-gatk trio 
 #
@@ -73,7 +75,8 @@ Pre-processing of the individual samples VCF:
 
 
 Merge samples VCF to create a family-trio VCF:  
-bcftools merge -0 -m none -O v -o GIAB-family-dv-bcftools.vcf HG002.output.vcf.gz HG003.output.vcf.gz HG004.output.vcf.gz;
+bcftools merge -0 -m none -O v -o GIAB-family-dv-bcftools.vcf \  
+HG002.output.vcf.gz HG003.output.vcf.gz HG004.output.vcf.gz  
 
 Post-processing of the family-trio VCF:  
 
