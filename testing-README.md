@@ -51,8 +51,8 @@ NA12892 (mother) - ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/workin
 ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/working/20120117_ceu_trio_b37_decoy/CEUTrio.HiSeq.WEx.b37_decoy.NA12892.clean.dedup.recal.20120117.bam.bai
 
 **Reference :**  
-human_g1k_v37_decoy.fasta 
-human_g1k_v37_decoy.fasta.fai
+ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/b37/human_g1k_v37_decoy.fasta.gz
+ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/b37/human_g1k_v37_decoy.fasta.fai.gz
 
 
 ## Create dv-trio trio - using GIAB AKT trio 
@@ -68,6 +68,25 @@ The file is named "trio_co_called.vcf.gz"
 #
 using the VCF files created as part of the dv-trio process. Each sample's VCF are located in their own sample named directory within the deepvariant directory.
 eg for HG002, it would located at deepvariant/HG002/output/HG002.output.vcf.gz
+
+Pre-processing of the individual samples VCF:  
+
+
+Merge samples VCF to create a family-trio VCF:  
+bcftools merge -0 -m none -O v -o GIAB-family-dv-bcftools.vcf HG002.output.vcf.gz HG003.output.vcf.gz HG004.output.vcf.gz;
+
+Post-processing of the family-trio VCF:  
+
+1. Remove all non-variant detail lines from family-trio VCF
+gatk --java-options SelectVariants  \
+-V GIAB-family-dv-bcftools.vcf \
+-O GIAB-family-dv-bcftools-variants.vcf \
+-sn "HG002" \
+-sn "HG003" \
+-sn "HG004" \
+-remove-unused-alternates TRUE \
+-exclude-non-variants TRUE 
+
 
 ## Create gatk4-bp trio 
 #
