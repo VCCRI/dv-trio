@@ -108,7 +108,7 @@ Final output of dv-trio-bcftools trio is GIAB-family-dv-bcftools-variants.vcf
 
 ## Create gatk4-bp trio 
 
-**Apply BQSR on BAMs**  
+**1. Apply BQSR on BAMs**  
 
 gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" BaseRecalibrator \
 -R $ref \
@@ -124,13 +124,13 @@ gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" ApplyBQSR \
 --bqsr-recal-file $bqsr_table \
 -O $bqsr_bam
 #
-**Validate BQSR BAMs**
+**2. Validate BQSR BAMs**
 
 java -Xmx16g -Djava.io.tmpdir=$TEMP_DIR -jar  /home/ubuntu/dv-trio/picard.jar ValidateSamFile \
 I=$bqsr_bam \
 MODE=VERBOSE
 #
-**Call gVCF from BQSR BAMs**
+**3. Call gVCF from BQSR BAMs**
 
 gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" HaplotypeCaller \
 -R $ref \
@@ -138,7 +138,7 @@ gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" HaplotypeCaller \
 -ERC GVCF \
 -O $sample_gvcf 
 #
-**Validate gVCFs**
+**4. Validate gVCFs**
 
 /home/ubuntu/dv-trio/gatk/gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" ValidateVariants \
 -R $ref \
@@ -146,7 +146,7 @@ gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" HaplotypeCaller \
 --validation-type-to-exclude ALLELES \
 -gvcf
 #
-**Setup GATK GenomicDB**
+**5. Setup GATK GenomicDB**
 
 gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" GenomicsDBImport \
 -V "child.g.vcf.gz" \
@@ -155,7 +155,7 @@ gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" GenomicsDBImport \
 -L 1 -L 2 -L 3 -L 4 -L 5 -L 6 -L 7 -L 8 -L 9 -L 10 -L 11 -L 12 -L 13 -L 14 -L 15 -L 16 -L 17 -L 18 -L 19 -L 20 -L 21 -L 22 -L X -L Y -L MT \
 --genomicsdb-workspace-path "/gvcf/GDBI"
 #
-**Call trio VCF**
+**6. Call trio VCF**
 
 gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" GenotypeGVCFs \
 -R $ref \
@@ -164,7 +164,7 @@ gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" GenotypeGVCFs \
 --tmp-dir="/temp/" \
 -O "gatk4-bp-co_called.vcf.gz"
 #
-**Variant Quality Check of VCF**
+**7. Variant Quality Check of VCF**
 
 gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" VariantFiltration \
 -R $ref \
@@ -173,7 +173,7 @@ gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" VariantFiltration \
 -V "gatk4-bp-co_called.vcf.gz" \
 -O "gatk4-bp-co_called.varFilt.vcf.gz"
 #
-**VQSR application on VCF**
+**8. VQSR application on VCF**
 
 gbundle="/home/ubuntu/CEPH-gatk/gatk-bundle"
 
@@ -224,7 +224,7 @@ gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" ApplyVQSR \
 -mode SNP \
 -O "gatk4-bp-co_called.varFilt.vqsr.vcf.gz"
 #
-**Validate final VCF**
+**9. Validate final VCF**
 
 gatk --java-options "-Xmx16g -Djava.io.tmpdir=$TEMP_DIR" ValidateVariants \
 -R $ref \
@@ -243,4 +243,5 @@ akt mendel GIAB.bcf -p GIAB.ped > GIAB_mendel.txt
 F1 score, recall and precision :  Haplotype Comparsion Tools ([https://github.com/Illumina/hap.py](https://github.com/Illumina/hap.py))  
 
 #
+
 
