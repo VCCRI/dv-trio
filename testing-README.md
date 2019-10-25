@@ -66,23 +66,37 @@ bash dv-trio.sh -i GIAB_trio_file.txt \
 This file is created as part of the dv-trio process. This file is located in the co_calling directory within the dv-trio output directory.
 The file is named "trio_co_called.vcf.gz" 
 
+Using variant tool set (vt) to decompose/block substitutions/normalization of multi-allelic variants ( git clone https://github.com/atks/vt.git )  
+
+1. vt decompose -o output_D.vcf -s trio_co_called.vcf.gz  
+2. vt decompose_blocksub -o output_DB.vcf -a output_D.vcf  
+3. vt normalize -r GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna -o trio_co_called_DBN.vcf output_DB.vcf  
+
+Final output of dv-trio-gatk trio is trio_co_called_DBN.vcf  
+
 ## Create dv-trio-bcftools trio 
 #
 using the VCF files created as part of the dv-trio process. Each sample's VCF are located in their own sample named directory within the deepvariant directory.
 eg for HG002, it would located at deepvariant/HG002/output/HG002.output.vcf.gz
 
-Pre-processing of the individual samples VCF:  
+Pre-processing of the individual samples VCF - repeat for each sample (HG002/HG003/HG004):  
 
+1. vt decompose -o HG002_D.vcf -s HG002.output.vcf.gz  
+2. vt decompose_blocksub -o HG002_DB.vcf -a HG002_D.vcf  
+3. vt normalize -r GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna -o HG002_DBN.vcf HG002_DB.vcf  
 
 Merge samples VCF to create a family-trio VCF:  
-bcftools merge -0 -m none -O v -o GIAB-family-dv-bcftools.vcf \  
-HG002.output.vcf.gz HG003.output.vcf.gz HG004.output.vcf.gz  
+4. bcftools merge -0 -m none -O v -o GIAB-family-dv-bcftools.vcf \  
+HG002_DBN.vcf HG003_DBN.vcf HG004_DBN.vcf  
 
 Post-processing of the family-trio VCF:  
 
-1. Remove all non-variant detail lines from family-trio VCF
+1. vt decompose -o GIAB-family-dv-bcftools_D.vcf -s GIAB-family-dv-bcftools.vcf  
+2. vt decompose_blocksub -o GIAB-family-dv-bcftools_DB.vcf -a GIAB-family-dv-bcftools_D.vcf  
+3. vt normalize -r GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna -o GIAB-family-dv-bcftools_DBN.vcf GIAB-family-dv-bcftools_DB.vcf  
+4. Remove all non-variant detail lines from family-trio VCF
 gatk --java-options SelectVariants  \
--V GIAB-family-dv-bcftools.vcf \
+-V GIAB-family-dv-bcftools_DBN.vcf \
 -O GIAB-family-dv-bcftools-variants.vcf \
 -sn "HG002" \
 -sn "HG003" \
@@ -90,6 +104,7 @@ gatk --java-options SelectVariants  \
 -remove-unused-alternates TRUE \
 -exclude-non-variants TRUE 
 
+Final output of dv-trio-bcftools trio is GIAB-family-dv-bcftools-variants.vcf  
 
 ## Create gatk4-bp trio 
 #
