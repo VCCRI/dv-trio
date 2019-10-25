@@ -86,15 +86,15 @@ Pre-processing of the individual samples VCF - repeat for each sample (HG002/HG0
 3. vt normalize -r GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna -o HG002_DBN.vcf HG002_DB.vcf  
 
 Merge samples VCF to create a family-trio VCF:  
-4. bcftools merge -0 -m none -O v -o GIAB-family-dv-bcftools.vcf \  
-HG002_DBN.vcf HG003_DBN.vcf HG004_DBN.vcf  
+
+4. bcftools merge -0 -m none -O v -o GIAB-family-dv-bcftools.vcf HG002_DBN.vcf HG003_DBN.vcf HG004_DBN.vcf  
 
 Post-processing of the family-trio VCF:  
 
-1. vt decompose -o GIAB-family-dv-bcftools_D.vcf -s GIAB-family-dv-bcftools.vcf  
-2. vt decompose_blocksub -o GIAB-family-dv-bcftools_DB.vcf -a GIAB-family-dv-bcftools_D.vcf  
-3. vt normalize -r GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna -o GIAB-family-dv-bcftools_DBN.vcf GIAB-family-dv-bcftools_DB.vcf  
-4. Remove all non-variant detail lines from family-trio VCF
+5. vt decompose -o GIAB-family-dv-bcftools_D.vcf -s GIAB-family-dv-bcftools.vcf  
+6. vt decompose_blocksub -o GIAB-family-dv-bcftools_DB.vcf -a GIAB-family-dv-bcftools_D.vcf  
+7. vt normalize -r GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna -o GIAB-family-dv-bcftools_DBN.vcf GIAB-family-dv-bcftools_DB.vcf  
+8. Remove all non-variant detail lines from family-trio VCF
 gatk --java-options SelectVariants  \
 -V GIAB-family-dv-bcftools_DBN.vcf \
 -O GIAB-family-dv-bcftools-variants.vcf \
