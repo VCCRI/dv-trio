@@ -26,6 +26,7 @@ Required arguments:
 
   -i <input parameters file>     path to input parameter file containing trio bam path
   -r <reference>  path to reference file
+  -d <dbsnp vcf>  path to dbsnp file
 
 Options:
   -o <output>     path to desired output directory (defaults to current directory)
@@ -117,6 +118,7 @@ call_deepvariant ()
 #	touch $create_dir/sample.txt
 	echo -e "OUT\t$create_dir" > $create_dir/sample.txt
 	echo -e "REF\t$ref" >> $create_dir/sample.txt
+	echo -e "DBSNP\t$dbsnp" >> $create_dir/sample.txt
 	echo -e "SAMPLE\t${IDs[$index]}\t${bams[$index]}\t${genders[$index]}" >> $create_dir/sample.txt
  done
 #
@@ -182,6 +184,7 @@ call_gatk_co_calling ()
  #touch $co_call_dir/trio.txt
  echo -e "OUT\t$co_call_dir" > $co_call_dir/trio.txt
  echo -e "REF\t$ref" >> $co_call_dir/trio.txt
+ echo -e "DBSNP\t$dbsnp" >> $co_call_dir/trio.txt
  cat $child_dir/${child[1]}"_done.txt" >> $co_call_dir/trio.txt
  cat $father_dir/${father[1]}"_done.txt" >> $co_call_dir/trio.txt
  cat $mother_dir/${mother[1]}"_done.txt" >> $co_call_dir/trio.txt
@@ -262,6 +265,7 @@ call_cleanup ()
 #
 input_given=false
 ref_given=false
+dbsnp_given=false
 father_given=false
 mother_given=false
 child_given=false
@@ -269,6 +273,7 @@ mother_path=''
 child_path=''
 child_sex=''
 ref=''
+dbsnp=''
 currdir=`pwd`
 outdir="$currdir/output"
 Famseq_threshold='1.0'
@@ -287,6 +292,9 @@ while getopts ':hni:r:o:t:b:f:' opt; do
     r)
 		ref="$OPTARG" 
 		ref_given=true;;
+    d)
+		dbsnp="$OPTARG" 
+		dbsnp_given=true;;
     f)
 		run_function="$OPTARG" ;;
 
@@ -322,6 +330,10 @@ then #
 elif [ "$ref_given" = false ]; #
 then #
 	usage 1 "-r requires an argument" 
+	exit
+elif [ "$dbsnp_given" = false ]; #
+then #
+	usage 1 "-d requires an argument" 
 	exit
 fi #
 #

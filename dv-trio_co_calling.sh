@@ -38,6 +38,9 @@ do #
  elif [ $s_type == "REF" ]; # 
  then # No
 	ref=${sample_val[1]}
+ elif [ $s_type == "DBSNP" ]; # 
+ then # No
+	dbsnp=${sample_val[1]}
  elif [ $s_type == "OUT" ]; # 
  then # No
 	COCALL_DIR=${sample_val[1]}
@@ -92,6 +95,7 @@ co_called_vcf="${COCALL_DIR}/trio_co_called.vcf.gz"
 gatk/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$PBS_JOBFS" GenotypeGVCFs \
 -R $ref \
 -V $merge_gvcf \
+-D $dbsnp \
 -O $co_called_vcf
 #
 tabix -p vcf $co_called_vcf
