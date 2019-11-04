@@ -283,7 +283,7 @@ upload_to_bucket=false
 bucket=''
 
 # Handle parameters
-while getopts ':hni:r:o:t:b:f:' opt; do
+while getopts ':hni:r:d:o:t:b:f:' opt; do
   case "$opt" in 
     i)
 		input_file="$OPTARG" 
