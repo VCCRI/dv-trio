@@ -19,6 +19,8 @@ Required arguments:
                               See input file creation section below for details
   -r <reference>              path to reference file. 
                               The directory holding the reference file need to contain the fa, fai and dict files
+  -d <dbSNP VCF>              path to dbSNP VCF file. 
+                                                        
 
 Options:
   -o <output>     path to desired output directory (defaults to current directory)
