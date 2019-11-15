@@ -35,6 +35,10 @@ NA12892 (mother) - ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/ill
 GRCh38_full_analysis_set_plus_decoy_hla.fa  
 GRCh38_full_analysis_set_plus_decoy_hla.fa.fai  
 
+**dbSNP VCF :**  
+gatk_bundle/hg38/dbsnp_146.hg38.vcf.gz
+gatk_bundle/hg38/dbsnp_146.hg38.vcf.gz.tbi
+
 **Pedigree :**  
 Family Subject Father Mother Sex Phenotype   
 NA12878	NA12878	NA12891	NA12892	2	2   
@@ -54,6 +58,9 @@ ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/working/20120117_ceu_trio
 ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/b37/human_g1k_v37_decoy.fasta.gz  
 ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/b37/human_g1k_v37_decoy.fasta.fai.gz  
 
+**dbSNP VCF :**  
+gatk_bundle/b37/dbsnp_138.b37.vcf.gz
+gatk_bundle/b37/dbsnp_138.b37.vcf.gz.tbi
 
 ## Create dv-trio trio - using GIAB AKT trio 
 
