@@ -92,7 +92,7 @@ tabix -p vcf $merge_gvcf
 co_called_vcf="${COCALL_DIR}/trio_co_called.vcf.gz"
 #
 #gatk-4.1.2.0/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$PBS_JOBFS" GenotypeGVCFs 
-gatk/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$PBS_JOBFS" GenotypeGVCFs \
+gatk/gatk --java-options "-Xmx12g -Djava.io.tmpdir=$TEMP_DIR" GenotypeGVCFs \
 -R $ref \
 -V $merge_gvcf \
 -D $dbsnp \
