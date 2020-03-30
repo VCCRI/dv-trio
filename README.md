@@ -9,7 +9,7 @@ Clone this repository into your cloud instance and run the `bash install_depende
 ## Usage
 ```
 Usage:
-       dv-trio.sh -i <input parameter file> -r <reference> [ -o <output directory name> ] [ -t <threshold> ] [ -b <bucket> ]
+       dv-trio.sh -i <input parameter file> -r <reference> -d <dbSNP VCF> [ -o <output directory name> ] [ -t <threshold> ] [ -b <bucket> ]
 
 Post-processes trio calls made by DeepVariant to correct for Mendelian errors.
 
