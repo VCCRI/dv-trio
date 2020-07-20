@@ -53,6 +53,11 @@ Instance Storage : 1000GB (at least two times the size of the bam files size)
 ## Application Note Details
 For more detail on how to replicate the results shown in the application note please see the testing-README.md.
 
+## Citation
+Eddie K K Ip, Clinton Hadinata, Joshua W K Ho, Eleni Giannoulatou  
+dv-trio: a family-based variant calling pipeline using DeepVariant  
+Bioinformatics, Volume 36, Issue 11, June 2020, Pages 3549–3551, https://doi.org/10.1093/bioinformatics/btaa116
+
 ## References 
 
  1. R. Poplin, P.-C. Chang, D. Alexander, S. Schwartz, T. Colthurst, A. Ku, D. Newburger,
